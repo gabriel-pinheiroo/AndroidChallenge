@@ -47,6 +47,7 @@ Na tela de pedidos, deverá haver um menu onde será possível ver a legenda dos
 - O projeto deverá seguir os padrões SOLID e ser feito na arquitetura **MVVM** utilizando coroutines (flow/liveData)
 - O projeto deverá conter código Java e Kotlin (80% kotlin e 20% Java)
 - Deverá ser criada uma job periódica (com intervalo de 15 minutos), onde deverá ser feita a requisição dos dados.
+- Faça um readme informando as técnologias escolhidas e o porque.
 
 ### Opcionais
 
