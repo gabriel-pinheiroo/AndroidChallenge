@@ -67,6 +67,54 @@ Na tela de pedidos, deverá haver um menu onde será possível ver a legenda dos
 
 Caso encontre algum erro, ou tenha alguma sugestão para melhorar esta avaliação, nos informe 😁
 
+### Cores
+
+**Geral**
+	Fundo da tela - #FFFFFF (cinza claro)
+	Toolbar - #186096 (azul mais claro)
+	Status bar - #00386C (azul mais escuro)
+	Fundo da tela que tiver cards - #F1F1F1 (cinza)
+	Fundo dos cards - #FFFFFF (branco)
+	Bottom navigation - #186096
+	Ícone e texto ativos do bottom - #FFFFFF
+	Ícone e texto inativos do bottom - #95B6CF (azul claro)
+
+**Splash**
+	Fundo gradiente - de #186096 (azul mais claro) para #053F6A (azul mais escuro)
+
+**Dados do cliente**
+	Textos - #000000
+	Labels dos textos - #95989A
+	Razão social - #606060
+	Botão de telefone - #186096
+	Botão de e-mail -#C1392B
+	Botão de Verificar status - #638735 (verde)
+
+**Histórico de pedidos**
+	Textos - #000000 (preto)
+	Labels dos textos - #95989A
+	**Status dos pedidos**
+		Em processamento por parte do FV - #95989A (cinza claro)
+		Pedido recusado pelo ERP - #FF9900 (amarelo)
+		Pendente - #606060 (cinza)
+		Bloqueado - #3557AA (roxo)
+		Liberado - #186096 (azul)
+		Montado - #7FAA33 (verde claro)
+		Faturado - #64863B (verde escuro)
+		Cancelado - #E40613 (vermelho)
+		Orçamento - #2D3E4E (cinza escuro) 
+	**Tipos de crítica**
+		Aguardando retorno do ERP - #757575 (cinza)
+		Sucesso - #64863B (verde)
+		Falha parcial - #FF9900 (amarelo)
+		Falha total- #E40613 (vermelho)
+	**Legendas**
+		Pedido sofreu corte - #FF9900 (amarelo)
+		Pedido com falta - #BF595F (rosa)
+		Pedido cancelado no ERP - #E40613 (vermelho)
+		Pedido com devolução - #186096 (azul)
+		Pedido feito pelo telemarketing - #64863B (verde)
+
 Imagens             |  Imagens
 :-------------------------:|:-------------------------:
 <img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%201.png" width=50% height=50%>  |  <img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%202.png" width=50% height=50%>
