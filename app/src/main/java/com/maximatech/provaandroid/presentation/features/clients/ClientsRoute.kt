@@ -8,11 +8,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.maximatech.provaandroid.LocalTopBarManager
 
 @Composable
-fun ClientsRoute(modifier: Modifier = Modifier) {
+fun ClientsRoute(
+    modifier: Modifier = Modifier
+) {
+
+    val topBarManager = LocalTopBarManager.current
+
+    LaunchedEffect(Unit) {
+        topBarManager.showTopBar()
+        topBarManager.setTopBarConfig {
+            this.title = "MaxApp"
+            showTitle = true
+            showMenuButton = true
+            this.onMenuClicked = {
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
