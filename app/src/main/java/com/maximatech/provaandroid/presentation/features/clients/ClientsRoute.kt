@@ -27,7 +27,7 @@ import com.maximatech.provaandroid.presentation.designSystem.components.legends.
 fun ClientsRoute(
     modifier: Modifier = Modifier,
     viewModel: ClientViewModel = koinViewModel(),
-    navigateToClientDetails: () -> Unit = {},
+    navigateToClientDetails: (String) -> Unit = {},
 ) {
     val topBarManager = LocalTopBarManager.current
     val state by viewModel.state.collectAsState()
@@ -80,7 +80,7 @@ fun ClientsRoute(
                         ClientCard(
                             client = state.client,
                             onClick = {
-                                navigateToClientDetails()
+                                navigateToClientDetails(state.client.nomeFantasia)
                             }
                         )
                     }

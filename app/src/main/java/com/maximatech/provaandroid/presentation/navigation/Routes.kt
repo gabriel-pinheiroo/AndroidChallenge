@@ -15,5 +15,5 @@ sealed interface Routes {
     data object Splash : Routes
 
     @Serializable
-    data object ClientDetails : Routes
+    data class ClientDetails(val args: String) : Routes
 }

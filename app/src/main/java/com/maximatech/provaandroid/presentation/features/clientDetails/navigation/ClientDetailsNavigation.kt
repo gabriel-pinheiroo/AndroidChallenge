@@ -4,19 +4,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.maximatech.provaandroid.presentation.features.clientDetails.ClientDetailsRoute
 import com.maximatech.provaandroid.presentation.navigation.Routes
 
 fun NavController.navigateToClientDetails(
-    navOptions: NavOptions? = null
-) = navigate(route = Routes.ClientDetails, navOptions)
+    navOptions: NavOptions? = null,
+    clientName: String = "",
+) = navigate(route = Routes.ClientDetails(args = clientName), navOptions)
 
 fun NavGraphBuilder.clientDetailsScreen(
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
 ) {
-    composable<Routes.ClientDetails> {
+    composable<Routes.ClientDetails> { backStackEntry ->
+        val clientDetails: Routes.ClientDetails = backStackEntry.toRoute()
+
         ClientDetailsRoute(
-            onNavigateBack = onNavigateBack
+            onNavigateBack = onNavigateBack,
+            clientName = clientDetails.args
         )
     }
 }

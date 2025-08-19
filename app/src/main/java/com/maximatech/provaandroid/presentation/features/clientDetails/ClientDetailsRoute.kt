@@ -27,7 +27,8 @@ import org.koin.androidx.compose.koinViewModel
 fun ClientDetailsRoute(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ClientDetailsViewModel = koinViewModel()
+    viewModel: ClientDetailsViewModel = koinViewModel(),
+    clientName: String = ""
 ) {
     val topBarManager = LocalTopBarManager.current
     val state by viewModel.state.collectAsState()
@@ -36,7 +37,7 @@ fun ClientDetailsRoute(
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
         topBarManager.setTopBarConfig {
-            this.title = state.client.nomeFantasia
+            this.title = clientName
             showTitle = true
             showBackButton = true
             this.onBackClicked = onNavigateBack

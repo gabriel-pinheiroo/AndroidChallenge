@@ -32,8 +32,10 @@ fun ProvaAndroidNavHost(
     ) {
 
         clientsScreen(
-            onNavigateToClientDetails = {
-                navController.navigateToClientDetails()
+            onNavigateToClientDetails = { clientName ->
+                navController.navigateToClientDetails(
+                    clientName = clientName
+                )
             }
         )
 
