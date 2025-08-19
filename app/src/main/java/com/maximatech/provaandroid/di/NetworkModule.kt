@@ -2,6 +2,7 @@ package com.maximatech.provaandroid.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.maximatech.provaandroid.core.data.remote.service.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -23,7 +24,6 @@ val networkModule = module {
         }
     }
 
-
     single<OkHttpClient> {
         OkHttpClient.Builder()
             .addInterceptor(get<HttpLoggingInterceptor>())
@@ -39,5 +39,9 @@ val networkModule = module {
             .client(get())
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
+    }
+
+    single<ApiService> {
+        get<Retrofit>().create(ApiService::class.java)
     }
 }
