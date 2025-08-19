@@ -21,6 +21,7 @@ import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
 
 @Composable
 fun ClientsRoute(
@@ -29,7 +30,7 @@ fun ClientsRoute(
 ) {
     val topBarManager = LocalTopBarManager.current
     val state by viewModel.state.collectAsState()
-    var showDetailedView by remember { mutableStateOf(false) }
+    var showLegendsDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
@@ -38,6 +39,7 @@ fun ClientsRoute(
             showTitle = true
             showMenuButton = true
             this.onMenuClicked = {
+                showLegendsDialog = true
             }
         }
 
@@ -45,7 +47,7 @@ fun ClientsRoute(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(AppColors.CardBackground)
             .padding(16.dp)
@@ -76,12 +78,18 @@ fun ClientsRoute(
                     item {
                         ClientCard(
                             client = state.client,
-                            onClick = { showDetailedView = true }
+                            onClick = {}
                         )
                     }
                 }
             }
         }
+    }
+
+    if (showLegendsDialog) {
+        LegendsDialog(
+            onDismiss = { showLegendsDialog = false }
+        )
     }
 }
 

@@ -2,7 +2,6 @@ package com.maximatech.provaandroid.presentation.features.orders
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,6 +34,7 @@ import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusC
 import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Rejected
 import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Released
 import org.koin.androidx.compose.koinViewModel
+import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
 
 @Composable
 fun OrdersRoute(
@@ -43,6 +43,7 @@ fun OrdersRoute(
 ) {
     val topBarManager = LocalTopBarManager.current
     val state by viewModel.state.collectAsState()
+    var showLegendsDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
@@ -51,13 +52,14 @@ fun OrdersRoute(
             showTitle = true
             showMenuButton = true
             this.onMenuClicked = {
+                showLegendsDialog = true
             }
         }
         viewModel.getOrders()
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(AppColors.CardBackground)
             .padding(16.dp)
@@ -94,6 +96,12 @@ fun OrdersRoute(
             }
         }
     }
+
+    if (showLegendsDialog) {
+        LegendsDialog(
+            onDismiss = { showLegendsDialog = false }
+        )
+    }
 }
 
 @Composable
@@ -129,7 +137,7 @@ private fun OrderCard(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                if(order.tipo == "ORCAMENTO") {
+                if (order.tipo == "ORCAMENTO") {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -341,7 +349,7 @@ private fun LegendIcon(
         }
     }
 
-    if( text == null) {
+    if (text == null) {
         Box(
             modifier = modifier
                 .size(40.dp)
@@ -349,13 +357,13 @@ private fun LegendIcon(
                 .background(backgroundColor),
             contentAlignment = Alignment.Center
         ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_maxima_em_processamento),
-            contentDescription = "Aguardando Crítica",
-            modifier = Modifier.size(24.dp)
-        )
+            Image(
+                painter = painterResource(id = R.drawable.ic_maxima_em_processamento),
+                contentDescription = "Aguardando Crítica",
+                modifier = Modifier.size(24.dp)
+            )
         }
-    }else {
+    } else {
         Box(
             modifier = modifier
                 .size(40.dp)
