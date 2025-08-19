@@ -34,6 +34,7 @@ data class Contact(
     val tipo: String,
     val time: String,
     val email: String,
+    val hobbie: String = "",
     val dataNascimento: String,
     val dataNascimentoConjuge: String?
 ) {

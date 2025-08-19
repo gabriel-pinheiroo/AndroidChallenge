@@ -10,6 +10,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.maximatech.provaandroid.presentation.designSystem.components.bottomBar.BottomBarMenuItem
+import com.maximatech.provaandroid.presentation.features.clientDetails.navigation.clientDetailsScreen
+import com.maximatech.provaandroid.presentation.features.clientDetails.navigation.navigateToClientDetails
 import com.maximatech.provaandroid.presentation.features.clients.navigation.clientsScreen
 import com.maximatech.provaandroid.presentation.features.orders.navigation.ordersScreen
 
@@ -29,8 +31,16 @@ fun ProvaAndroidNavHost(
         exitTransition = { fadeOut() },
     ) {
 
-        clientsScreen()
+        clientsScreen(
+            onNavigateToClientDetails = {
+                navController.navigateToClientDetails()
+            }
+        )
 
         ordersScreen()
+
+        clientDetailsScreen(
+            onNavigateBack = navController::popBackStack
+        )
     }
 }

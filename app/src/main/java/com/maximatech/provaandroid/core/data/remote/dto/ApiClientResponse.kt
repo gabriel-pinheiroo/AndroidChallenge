@@ -62,13 +62,16 @@ data class ApiContact(
     @SerializedName("data_nascimento")
     val dataNascimento: String? = null,
     @SerializedName("dataNascimentoConjuge")
-    val dataNascimentoConjuge: String? = null
+    val dataNascimentoConjuge: String? = null,
+    @SerializedName("hobbie")
+    val hobbie: String? = null
 ){
     fun toContact(): Contact {
         return Contact(
             nome = nome.orEmpty(),
             telefone = telefone.orEmpty(),
             celular = celular.orEmpty(),
+            hobbie = hobbie.orEmpty(),
             conjuge = conjuge.orEmpty(),
             tipo = tipo.orEmpty(),
             time = time.orEmpty(),

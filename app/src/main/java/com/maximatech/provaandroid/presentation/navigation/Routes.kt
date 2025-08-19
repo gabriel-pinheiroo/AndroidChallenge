@@ -13,4 +13,7 @@ sealed interface Routes {
 
     @Serializable
     data object Splash : Routes
+
+    @Serializable
+    data object ClientDetails : Routes
 }

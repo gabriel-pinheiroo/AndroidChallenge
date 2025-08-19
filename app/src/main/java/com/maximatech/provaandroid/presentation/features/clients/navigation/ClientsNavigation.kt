@@ -12,9 +12,11 @@ fun NavController.navigateToClients(
 ) = navigate(route = Routes.Clients, navOptions)
 
 fun NavGraphBuilder.clientsScreen(
+    onNavigateToClientDetails: () -> Unit = {},
 ) {
     composable<Routes.Clients> {
         ClientsRoute(
+            navigateToClientDetails = onNavigateToClientDetails
         )
     }
 }

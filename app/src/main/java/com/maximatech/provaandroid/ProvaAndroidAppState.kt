@@ -34,6 +34,7 @@ class ProvaAndroidAppState(
 
     private val fullScreenDestinations: Set<String> = setOf(
         Routes.Splash::class.java.canonicalName.orEmpty(),
+        Routes.ClientDetails::class.java.canonicalName.orEmpty(),
     )
 
     init {
