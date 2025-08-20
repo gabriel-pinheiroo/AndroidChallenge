@@ -2,9 +2,12 @@ package com.maximatech.provaandroid.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.maximatech.provaandroid.core.data.network.DefaultNetworkConnectivityManager
+import com.maximatech.provaandroid.core.data.network.NetworkConnectivityManager
 import com.maximatech.provaandroid.core.data.remote.service.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,5 +46,9 @@ val networkModule = module {
 
     single<ApiService> {
         get<Retrofit>().create(ApiService::class.java)
+    }
+
+    single<NetworkConnectivityManager> {
+        DefaultNetworkConnectivityManager(androidContext())
     }
 }
