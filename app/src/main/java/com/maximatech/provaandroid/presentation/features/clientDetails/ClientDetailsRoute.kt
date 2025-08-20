@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +36,17 @@ fun ClientDetailsRoute(
     val topBarManager = LocalTopBarManager.current
     val state by viewModel.state.collectAsState()
     var showLegendsDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(state.showStatusSnackbar) {
+        if (state.showStatusSnackbar) {
+            snackbarHostState.showSnackbar(
+                message = state.clientStatus,
+                duration = SnackbarDuration.Short
+            )
+            viewModel.hideSnackbar()
+        }
+    }
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
@@ -47,47 +59,81 @@ fun ClientDetailsRoute(
         viewModel.getClientDetails()
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(AppColors.CardBackground)
-            .padding(16.dp)
-    ) {
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppColors.Primary
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    CircularProgressIndicator(
-                        color = AppColors.Primary
-                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = data.visuals.message,
+                            color = AppColors.OnPrimary,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            ),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
-
-            state.hasError -> {
-                ErrorCard(
-                    message = state.errorMessage,
-                    onRetry = { viewModel.getClientDetails() }
-                )
-            }
-
-            else -> {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item {
-                        ClientDataSection(client = state.client)
-                    }
-
-                    item {
-                        ContactsSection(client = state.client)
-                    }
-
-                    item {
-                        VerifyStatusButton(
-                            onVerifyClick = {}
+        },
+        containerColor = AppColors.CardBackground
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(AppColors.CardBackground)
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            when {
+                state.isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = AppColors.Primary
                         )
+                    }
+                }
+
+                state.hasError -> {
+                    ErrorCard(
+                        message = state.errorMessage,
+                        onRetry = { viewModel.getClientDetails() }
+                    )
+                }
+
+                else -> {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        item {
+                            ClientDataSection(client = state.client)
+                        }
+
+                        item {
+                            ContactsSection(client = state.client)
+                        }
+
+                        item {
+                            VerifyStatusButton(
+                                onVerifyClick = { viewModel.verifyClientStatusWithSnackbar() }
+                            )
+                        }
                     }
                 }
             }

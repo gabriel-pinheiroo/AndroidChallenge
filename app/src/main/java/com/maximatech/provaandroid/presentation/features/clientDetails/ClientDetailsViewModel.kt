@@ -16,12 +16,17 @@ data class ClientDetailsState(
     val isLoading: Boolean = false,
     val hasError: Boolean = false,
     val client: Client = Client.EMPTY,
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val showStatusToast: Boolean = false,
+    val showStatusSnackbar: Boolean = false,
+    val clientStatus: String = ""
 ) {
     fun onLoading() = copy(isLoading = true, hasError = false, errorMessage = "")
     fun onLoadingFinished() = copy(isLoading = false)
     fun onSuccess(client: Client) = copy(client = client, hasError = false, errorMessage = "")
     fun onError(message: String) = copy(hasError = true, errorMessage = message)
+    fun onShowStatusSnackbar(status: String) = copy(showStatusSnackbar = true, clientStatus = status)
+    fun onHideSnackbar() = copy(showStatusSnackbar = false)
 
     companion object {
         internal val Idle = ClientDetailsState()
@@ -56,6 +61,15 @@ class ClientDetailsViewModel(
                 }
             }
         }
+    }
+
+    fun verifyClientStatusWithSnackbar() {
+        val status = state.value.client.status
+        _state.update { onShowStatusSnackbar(status) }
+    }
+
+    fun hideSnackbar() {
+        _state.update { onHideSnackbar() }
     }
 
     fun clearError() {
