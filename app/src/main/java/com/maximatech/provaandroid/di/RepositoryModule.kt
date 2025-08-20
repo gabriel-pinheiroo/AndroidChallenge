@@ -10,13 +10,15 @@ val repositoryModule = module {
 
     single<ClientRepository> {
         DefaultClientRepositoryImpl(
-            api = get()
+            api = get(),
+            localDataSource = get()
         )
     }
 
     single<OrdersRepository> {
         DefaultOrdersRepositoryImpl(
-            api = get()
+            api = get(),
+            localDataSource = get()
         )
     }
 }
