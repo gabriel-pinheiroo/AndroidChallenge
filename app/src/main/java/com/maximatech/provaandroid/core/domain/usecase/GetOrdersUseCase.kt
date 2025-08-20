@@ -6,7 +6,7 @@ import com.maximatech.provaandroid.core.domain.repository.OrdersRepository
 class GetOrdersUseCase(
     private val ordersRepository: OrdersRepository
 ) {
-    suspend fun execute(): Result<List<Order>> {
+    suspend operator fun invoke(): Result<List<Order>> {
         return ordersRepository.getOrders()
     }
 }

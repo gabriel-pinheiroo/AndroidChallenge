@@ -45,7 +45,7 @@ class OrdersViewModel(
             _state.update { onLoading() }
 
             try {
-                val orders = getOrdersUseCase.execute().getOrThrow()
+                val orders = getOrdersUseCase().getOrThrow()
                 _state.update {
                     onLoadingFinished().onSuccess(orders)
                 }
