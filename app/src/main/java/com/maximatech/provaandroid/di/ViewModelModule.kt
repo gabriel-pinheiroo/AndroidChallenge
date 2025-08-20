@@ -1,6 +1,6 @@
 package com.maximatech.provaandroid.di
 
-import com.maximatech.provaandroid.MainActivityViewModel
+import com.maximatech.provaandroid.app.MainActivityViewModel
 import com.maximatech.provaandroid.features.client.ClientViewModel
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
 import com.maximatech.provaandroid.features.orders.OrdersViewModel

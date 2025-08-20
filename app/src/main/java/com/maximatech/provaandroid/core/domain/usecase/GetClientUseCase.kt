@@ -6,7 +6,7 @@ import com.maximatech.provaandroid.core.domain.model.Client
 class GetClientUseCase(
     private val clientRepository: ClientRepository
 ) {
-    suspend fun execute(): Result<Client> {
+    suspend operator fun invoke(): Result<Client> {
         return clientRepository.getClient()
     }
 }

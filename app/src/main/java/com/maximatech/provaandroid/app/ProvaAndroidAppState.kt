@@ -1,4 +1,4 @@
-package com.maximatech.provaandroid
+package com.maximatech.provaandroid.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

@@ -1,6 +1,7 @@
-package com.maximatech.provaandroid
+package com.maximatech.provaandroid.app
 
 import android.app.Application
+import com.maximatech.provaandroid.BuildConfig
 import com.maximatech.provaandroid.di.appModule
 import com.maximatech.provaandroid.di.databaseModule
 import com.maximatech.provaandroid.di.networkModule
@@ -21,7 +22,9 @@ class ProvaAndroidApplication : Application() {
 
     private fun setupKoin() {
         startKoin {
-            androidLogger(Level.DEBUG)
+            if (BuildConfig.DEBUG) {
+                androidLogger(Level.DEBUG)
+            }
             androidContext(this@ProvaAndroidApplication)
             modules(
                 appModule,

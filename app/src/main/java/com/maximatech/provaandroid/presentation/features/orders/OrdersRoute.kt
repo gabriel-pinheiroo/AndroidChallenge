@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maximatech.provaandroid.LocalTopBarManager
+import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Order
 import com.maximatech.provaandroid.features.orders.OrdersViewModel

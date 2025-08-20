@@ -1,4 +1,4 @@
-package com.maximatech.provaandroid
+package com.maximatech.provaandroid.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

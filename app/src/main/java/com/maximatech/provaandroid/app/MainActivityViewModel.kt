@@ -1,6 +1,7 @@
-package com.maximatech.provaandroid
+package com.maximatech.provaandroid.app
 
 import androidx.lifecycle.ViewModel
+import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.presentation.designSystem.components.bottomBar.BottomBarMenuItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

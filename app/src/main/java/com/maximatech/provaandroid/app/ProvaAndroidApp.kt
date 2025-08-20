@@ -1,4 +1,4 @@
-package com.maximatech.provaandroid
+package com.maximatech.provaandroid.app
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
