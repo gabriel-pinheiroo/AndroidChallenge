@@ -44,7 +44,7 @@ class ClientDetailsViewModel(
             _state.update { onLoading() }
 
             try {
-                val client = getClientUseCase.execute().getOrThrow()
+                val client = getClientUseCase().getOrThrow()
                 _state.update {
                     onLoadingFinished().onSuccess(client)
                 }
