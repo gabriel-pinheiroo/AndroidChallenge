@@ -9,6 +9,7 @@ data class Client(
     val ramoAtividade: String,
     val endereco: String,
     val status: String,
+    val cpf: String,
     val contatos: List<Contact>
 ) {
     companion object {
@@ -21,7 +22,8 @@ data class Client(
             ramoAtividade = "",
             endereco = "",
             status = "",
-            contatos = emptyList()
+            contatos = emptyList(),
+            cpf = ""
         )
     }
 }

@@ -18,6 +18,8 @@ import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Client
 import com.maximatech.provaandroid.core.domain.model.Contact
+import com.maximatech.provaandroid.core.utils.formatBrazilianCellPhone
+import com.maximatech.provaandroid.core.utils.formatBrazilianDateWithValidation
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
@@ -154,10 +156,10 @@ private fun ClientDataSection(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            ClientDataRow(label = "CPF:", value = "039.039-61")
-            ClientDataRow(label = "CNPJ:", value = client.cnpj)
-            ClientDataRow(label = "Ramo de atividade:", value = client.ramoAtividade)
-            ClientDataRow(label = "Endereços:", value = client.endereco)
+            ClientDataRow(label = "CPF:", value = client.cpf.ifEmpty { "Não informado" })
+            ClientDataRow(label = "CNPJ:", value = client.cnpj.ifEmpty { "Não informado" })
+            ClientDataRow(label = "Ramo de atividade:", value = client.ramoAtividade.ifEmpty { "Não informado" })
+            ClientDataRow(label = "Endereços:", value = client.endereco.ifEmpty { "Não informado" })
         }
     }
 }
@@ -297,7 +299,7 @@ private fun ContactItem(
                 ) {
                     ContactDetailRow(
                         label = "Celular:",
-                        value = contact.celular.ifEmpty { "Não informado" }
+                        value = formatBrazilianCellPhone(contact.celular.ifEmpty { "Não informado" })
                     )
                     Image(
                         painter = painterResource(R.drawable.ic_maxima_telefone),
@@ -348,7 +350,7 @@ private fun ContactItem(
                 }
                 ContactDetailRow(
                     label = "Data Nasc.:",
-                    value = contact.dataNascimento.ifEmpty { "Não informado" }
+                    value = formatBrazilianDateWithValidation(contact.dataNascimento.ifEmpty { "Não informado" })
                 )
                 ContactDetailRow(
                     label = "Data Nasc. Cônjuge:",

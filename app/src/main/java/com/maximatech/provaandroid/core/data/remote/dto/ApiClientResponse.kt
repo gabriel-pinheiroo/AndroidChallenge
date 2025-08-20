@@ -27,7 +27,9 @@ data class ApiClient(
     @SerializedName("status")
     val status: String? = null,
     @SerializedName("contatos")
-    val contatos: List<ApiContact>? = null
+    val contatos: List<ApiContact>? = null,
+    @SerializedName("cpf")
+    val cpf: String? = null
 ){
     fun toClient(): Client {
         return Client(
@@ -38,6 +40,7 @@ data class ApiClient(
             cnpj = cnpj.orEmpty(),
             ramoAtividade = ramoAtividade.orEmpty(),
             endereco = endereco.orEmpty(),
+            cpf = cpf.orEmpty(),
             status = status.orEmpty(),
             contatos = contatos?.map { it.toContact() } ?: emptyList()
         )
