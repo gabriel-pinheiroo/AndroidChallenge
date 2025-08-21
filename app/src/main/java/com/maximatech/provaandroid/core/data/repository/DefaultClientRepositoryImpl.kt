@@ -1,3 +1,5 @@
+package com.maximatech.provaandroid.core.data.repository
+
 import com.maximatech.provaandroid.core.data.local.datasource.ClientLocalDataSource
 import com.maximatech.provaandroid.core.data.remote.service.ApiService
 import com.maximatech.provaandroid.core.data.network.NetworkConnectivityManager
@@ -25,6 +27,10 @@ class DefaultClientRepositoryImpl(
             coroutineContext.ensureActive()
             getClientFromLocal().takeIf { it.isSuccess } ?: Result.failure(exception)
         }
+    }
+
+    suspend fun syncClientFromNetwork(): Result<Client> {
+        return getClientFromNetwork()
     }
 
     private suspend fun getClientFromNetwork(): Result<Client> {

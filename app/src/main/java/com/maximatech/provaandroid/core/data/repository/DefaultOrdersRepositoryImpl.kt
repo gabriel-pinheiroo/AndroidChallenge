@@ -29,6 +29,10 @@ class DefaultOrdersRepositoryImpl(
         }
     }
 
+    suspend fun syncOrdersFromNetwork(): Result<List<Order>> {
+        return getOrdersFromNetwork()
+    }
+
     private suspend fun getOrdersFromNetwork(): Result<List<Order>> {
         return try {
             val response = api.getOrders()
