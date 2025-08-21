@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
 
-    single {
+    single<ClientRepository> {
         DefaultClientRepositoryImpl(
             api = get(),
             localDataSource = get(),
@@ -16,19 +16,11 @@ val repositoryModule = module {
         )
     }
 
-    single {
+    single<OrdersRepository> {
         DefaultOrdersRepositoryImpl(
             api = get(),
             localDataSource = get(),
             networkConnectivityManager = get()
         )
-    }
-
-    single<ClientRepository> {
-        get<DefaultClientRepositoryImpl>()
-    }
-
-    single<OrdersRepository> {
-        get<DefaultOrdersRepositoryImpl>()
     }
 }

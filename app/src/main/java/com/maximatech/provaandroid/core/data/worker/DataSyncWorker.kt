@@ -3,8 +3,8 @@ package com.maximatech.provaandroid.core.data.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.maximatech.provaandroid.core.data.repository.DefaultClientRepositoryImpl
-import com.maximatech.provaandroid.core.data.repository.DefaultOrdersRepositoryImpl
+import com.maximatech.provaandroid.core.domain.repository.ClientRepository
+import com.maximatech.provaandroid.core.domain.repository.OrdersRepository
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.koin.core.context.GlobalContext
@@ -35,20 +35,16 @@ class DataSyncWorker(
 
             try {
                 val koin = GlobalContext.get()
-                val clientRepo = koin.get<DefaultClientRepositoryImpl>()
-                val ordersRepo = koin.get<DefaultOrdersRepositoryImpl>()
+                val clientRepo = koin.get<ClientRepository>()
+                val ordersRepo = koin.get<OrdersRepository>()
 
-                val clientResult = clientRepo.syncClientFromNetwork()
-                val ordersResult = ordersRepo.syncOrdersFromNetwork()
+                val clientResult = clientRepo.getClientFromNetwork()
+                val ordersResult = ordersRepo.getOrdersFromNetwork()
 
                 when {
-                    clientResult.isSuccess || ordersResult.isSuccess -> {
-                        Result.success()
-                    }
-                    else -> {
-                        println("Falha na sincronização")
-                        Result.retry()
-                    }
+                    clientResult.isSuccess || ordersResult.isSuccess -> Result.success()
+
+                    else -> Result.retry()
                 }
             } catch (e: Throwable) {
                 println("Erro na sincronização: ${e.message}")

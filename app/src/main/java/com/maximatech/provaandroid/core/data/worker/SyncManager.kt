@@ -14,8 +14,12 @@ class SyncManager(private val context: Context) {
         WorkManager.getInstance(context)
     }
 
-    fun startPeriodicSync() {
-        workManager.cancelUniqueWork(WORK_NAME)
+    fun initialize() {
+        stopSync()
+        startPeriodicSync()
+    }
+
+    private fun startPeriodicSync() {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -30,12 +34,12 @@ class SyncManager(private val context: Context) {
 
         workManager.enqueueUniquePeriodicWork(
             WORK_NAME,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
 
-    fun stopSync() {
+    private fun stopSync() {
         workManager.cancelUniqueWork(WORK_NAME)
     }
 }

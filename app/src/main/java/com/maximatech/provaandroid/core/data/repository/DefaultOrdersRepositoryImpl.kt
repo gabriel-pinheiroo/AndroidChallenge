@@ -1,6 +1,5 @@
 package com.maximatech.provaandroid.core.data.repository
 
-import android.annotation.SuppressLint
 import com.maximatech.provaandroid.core.data.remote.service.ApiService
 import com.maximatech.provaandroid.core.data.local.datasource.OrderLocalDataSource
 import com.maximatech.provaandroid.core.data.network.NetworkConnectivityManager
@@ -30,11 +29,7 @@ class DefaultOrdersRepositoryImpl(
         }
     }
 
-    suspend fun syncOrdersFromNetwork(): Result<List<Order>> {
-        return getOrdersFromNetwork()
-    }
-
-    private suspend fun getOrdersFromNetwork(): Result<List<Order>> {
+    override suspend fun getOrdersFromNetwork(): Result<List<Order>> {
         return try {
             val response = api.getOrders()
             val orders = response.pedidos?.map { it.toOrder() } ?: emptyList()
@@ -50,7 +45,7 @@ class DefaultOrdersRepositoryImpl(
 
     private suspend fun getOrdersFromLocal(): Result<List<Order>> {
         return try {
-            val orders = localDataSource.getOrders()
+            val orders: List<Order> = localDataSource.getOrders()
                 Result.success(orders)
 
         } catch (exception: Throwable) {

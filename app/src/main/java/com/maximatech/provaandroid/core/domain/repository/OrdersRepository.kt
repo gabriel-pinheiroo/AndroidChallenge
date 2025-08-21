@@ -4,4 +4,5 @@ import com.maximatech.provaandroid.core.domain.model.Order
 
 interface OrdersRepository {
     suspend fun getOrders(): Result<List<Order>>
+    suspend fun getOrdersFromNetwork(): Result<List<Order>>
 }
