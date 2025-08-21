@@ -42,9 +42,6 @@ class DataSyncWorker(
                 val ordersResult = ordersRepo.syncOrdersFromNetwork()
 
                 when {
-                    clientResult.isSuccess && ordersResult.isSuccess -> {
-                        Result.success()
-                    }
                     clientResult.isSuccess || ordersResult.isSuccess -> {
                         Result.success()
                     }
@@ -53,7 +50,7 @@ class DataSyncWorker(
                         Result.retry()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 println("Erro na sincronização: ${e.message}")
                 Result.failure()
             } finally {

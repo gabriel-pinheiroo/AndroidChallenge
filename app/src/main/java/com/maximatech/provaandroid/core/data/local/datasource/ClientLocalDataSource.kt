@@ -17,8 +17,8 @@ class ClientLocalDataSource(
         clientDao.saveClientWithContacts(clientEntity, contactEntities)
     }
 
-    suspend fun getClient(): Client? {
-        val clientEntity = clientDao.getClient() ?: return null
+    suspend fun getClient(): Client {
+        val clientEntity = clientDao.getClient()
         val contacts = clientDao.getContactsByClientId(clientEntity.id)
             .map { it.toContact() }
         return clientEntity.toClient(contacts)

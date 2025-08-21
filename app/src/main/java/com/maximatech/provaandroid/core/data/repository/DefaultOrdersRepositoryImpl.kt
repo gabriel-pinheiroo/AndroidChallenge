@@ -1,5 +1,6 @@
 package com.maximatech.provaandroid.core.data.repository
 
+import android.annotation.SuppressLint
 import com.maximatech.provaandroid.core.data.remote.service.ApiService
 import com.maximatech.provaandroid.core.data.local.datasource.OrderLocalDataSource
 import com.maximatech.provaandroid.core.data.network.NetworkConnectivityManager
@@ -25,7 +26,7 @@ class DefaultOrdersRepositoryImpl(
             }
         } catch (exception: Throwable) {
             coroutineContext.ensureActive()
-            getOrdersFromLocal().takeIf { it.isSuccess } ?: Result.failure(exception)
+            Result.failure(exception)
         }
     }
 
@@ -43,24 +44,15 @@ class DefaultOrdersRepositoryImpl(
             Result.success(orders)
         } catch (exception: Throwable) {
             coroutineContext.ensureActive()
-
-            val localResult = getOrdersFromLocal()
-            if (localResult.isSuccess) {
-                localResult
-            } else {
-                Result.failure(exception)
-            }
+            getOrdersFromLocal()
         }
     }
 
     private suspend fun getOrdersFromLocal(): Result<List<Order>> {
         return try {
             val orders = localDataSource.getOrders()
-            if (orders.isNotEmpty()) {
                 Result.success(orders)
-            } else {
-                Result.failure(Exception("Nenhum dado local encontrado. Conecte-se à internet para sincronizar."))
-            }
+
         } catch (exception: Throwable) {
             Result.failure(exception)
         }

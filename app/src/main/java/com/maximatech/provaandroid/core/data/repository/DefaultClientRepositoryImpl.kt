@@ -25,7 +25,7 @@ class DefaultClientRepositoryImpl(
             }
         } catch (exception: Throwable) {
             coroutineContext.ensureActive()
-            getClientFromLocal().takeIf { it.isSuccess } ?: Result.failure(exception)
+            Result.failure(exception)
         }
     }
 
@@ -56,11 +56,7 @@ class DefaultClientRepositoryImpl(
     private suspend fun getClientFromLocal(): Result<Client> {
         return try {
             val client = localDataSource.getClient()
-            if (client != null) {
                 Result.success(client)
-            } else {
-                Result.failure(Exception("Nenhum dado local encontrado. Conecte-se à internet para sincronizar."))
-            }
         } catch (exception: Throwable) {
             Result.failure(exception)
         }

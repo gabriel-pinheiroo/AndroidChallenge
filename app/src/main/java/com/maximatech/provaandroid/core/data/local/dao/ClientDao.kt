@@ -14,7 +14,7 @@ interface ClientDao {
     suspend fun insertContacts(contacts: List<ContactEntity>)
 
     @Query("SELECT * FROM clients LIMIT 1")
-    suspend fun getClient(): ClientEntity?
+    suspend fun getClient(): ClientEntity
 
     @Query("SELECT * FROM contacts WHERE clientId = :clientId")
     suspend fun getContactsByClientId(clientId: Int): List<ContactEntity>

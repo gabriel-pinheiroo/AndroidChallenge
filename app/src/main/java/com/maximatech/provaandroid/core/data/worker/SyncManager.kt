@@ -21,7 +21,7 @@ class SyncManager(private val context: Context) {
             15, TimeUnit.MINUTES
         )
             .setConstraints(constraints)
-            .setInitialDelay(15, TimeUnit.SECONDS)
+            .setInitialDelay(15, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
