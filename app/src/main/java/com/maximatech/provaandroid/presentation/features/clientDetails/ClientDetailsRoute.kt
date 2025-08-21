@@ -1,5 +1,6 @@
 package com.maximatech.provaandroid.presentation.features.clientDetails
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,38 +16,55 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Client
 import com.maximatech.provaandroid.core.domain.model.Contact
 import com.maximatech.provaandroid.core.utils.formatBrazilianCellPhone
 import com.maximatech.provaandroid.core.utils.formatBrazilianDateWithValidation
+import com.maximatech.provaandroid.features.clientDetails.ClientDetailsState
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
-import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ClientDetailsRoute(
+    clientName: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ClientDetailsViewModel = koinViewModel(),
-    clientName: String = ""
+    viewModel: ClientDetailsViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getClientDetails()
+    }
+
+    ClientDetailsScreen(
+        modifier = modifier,
+        state = state,
+        clientName = clientName,
+        onNavigateBack = onNavigateBack,
+        onRetry = viewModel::getClientDetails,
+        onVerifyStatus = viewModel::verifyClientStatusWithSnackbar,
+        onHideSnackbar = viewModel::hideSnackbar
+    )
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun ClientDetailsScreen(
+    modifier: Modifier = Modifier,
+    state: ClientDetailsState,
+    clientName: String,
+    onNavigateBack: () -> Unit = {},
+    onRetry: () -> Unit = {},
+    onVerifyStatus: () -> Unit = {},
+    onHideSnackbar: () -> Unit = {}
 ) {
     val topBarManager = LocalTopBarManager.current
-    val state by viewModel.state.collectAsState()
-    var showLegendsDialog by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(state.showStatusSnackbar) {
-        if (state.showStatusSnackbar) {
-            snackbarHostState.showSnackbar(
-                message = state.clientStatus,
-                duration = SnackbarDuration.Short
-            )
-            viewModel.hideSnackbar()
-        }
-    }
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
@@ -56,94 +74,96 @@ fun ClientDetailsRoute(
             showBackButton = true
             this.onBackClicked = onNavigateBack
         }
-        viewModel.getClientDetails()
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Card(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppColors.Primary
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = data.visuals.message,
-                            color = AppColors.OnPrimary,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            ),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
-        },
-        containerColor = AppColors.CardBackground
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(AppColors.CardBackground)
-                .padding(paddingValues)
-                .padding(16.dp)
+    LaunchedEffect(state.showStatusSnackbar) {
+        if (state.showStatusSnackbar) {
+            snackbarHostState.showSnackbar(
+                message = state.clientStatus,
+                duration = SnackbarDuration.Short
+            )
+            onHideSnackbar()
+        }
+    }
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            when {
-                state.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+            CircularProgressIndicator(
+                color = AppColors.Primary
+            )
+        }
+    } else {
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(snackbarHostState) { data ->
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = AppColors.Primary
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                        shape = RoundedCornerShape(12.dp)
                     ) {
-                        CircularProgressIndicator(
-                            color = AppColors.Primary
-                        )
+                        Box(
+                            modifier = Modifier
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = data.visuals.message,
+                                color = AppColors.OnPrimary,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                ),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
+            },
+            containerColor = AppColors.CardBackground
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(AppColors.CardBackground)
+                    .padding(16.dp)
+            ) {
+                when {
+                    state.hasError -> {
+                        ErrorCard(
+                            message = state.errorMessage,
+                            onRetry = onRetry
+                        )
+                    }
 
-                state.hasError -> {
-                    ErrorCard(
-                        message = state.errorMessage,
-                        onRetry = { viewModel.getClientDetails() }
-                    )
-                }
+                    else -> {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            item {
+                                ClientDataSection(client = state.client)
+                            }
 
-                else -> {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        item {
-                            ClientDataSection(client = state.client)
-                        }
+                            item {
+                                ContactsSection(client = state.client)
+                            }
 
-                        item {
-                            ContactsSection(client = state.client)
-                        }
-
-                        item {
-                            VerifyStatusButton(
-                                onVerifyClick = { viewModel.verifyClientStatusWithSnackbar() }
-                            )
+                            item {
+                                VerifyStatusButton(
+                                    onVerifyClick = onVerifyStatus
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
-
-    if (showLegendsDialog) {
-        LegendsDialog(
-            onDismiss = { showLegendsDialog = false }
-        )
     }
 }
 
@@ -283,7 +303,7 @@ private fun ContactsSection(
 
                     if (index < client.contatos.size - 1) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        Divider(
+                        HorizontalDivider(
                             color = AppColors.OnSurfaceLight.copy(alpha = 0.2f),
                             thickness = 1.dp
                         )

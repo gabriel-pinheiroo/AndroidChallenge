@@ -18,31 +18,40 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
-import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Order
+import com.maximatech.provaandroid.features.orders.OrdersState
 import com.maximatech.provaandroid.features.orders.OrdersViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
-import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors.Background
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Blocked
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Budget
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Canceled
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Invoiced
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Mounted
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Pending
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Processing
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Rejected
-import com.maximatech.provaandroid.presentation.designSystem.tokens.OrderStatusColors.Released
-import org.koin.androidx.compose.koinViewModel
 import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OrdersRoute(
     modifier: Modifier = Modifier,
-    viewModel: OrdersViewModel = koinViewModel()
+    viewModel: OrdersViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getOrders()
+    }
+
+    OrdersScreen(
+        modifier = modifier,
+        state = state,
+        onRetry = viewModel::getOrders
+    )
+}
+
+@Composable
+fun OrdersScreen(
+    modifier: Modifier = Modifier,
+    state: OrdersState,
+    onRetry: () -> Unit = {}
 ) {
     val topBarManager = LocalTopBarManager.current
-    val state by viewModel.state.collectAsState()
     var showLegendsDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -55,42 +64,41 @@ fun OrdersRoute(
                 showLegendsDialog = true
             }
         }
-        viewModel.getOrders()
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(AppColors.CardBackground)
-            .padding(16.dp)
-    ) {
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = AppColors.Primary
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                color = AppColors.Primary
+            )
+        }
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(AppColors.CardBackground)
+                .padding(16.dp)
+        ) {
+            when {
+                state.hasError -> {
+                    ErrorCard(
+                        message = state.errorMessage,
+                        onRetry = onRetry
                     )
                 }
-            }
 
-            state.hasError -> {
-                ErrorCard(
-                    message = state.errorMessage,
-                    onRetry = { viewModel.getOrders() }
-                )
-            }
-
-            else -> {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.orders) { order ->
-                        OrderCard(
-                            order = order,
-                        )
+                else -> {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.orders) { order ->
+                            OrderCard(
+                                order = order
+                            )
+                        }
                     }
                 }
             }
@@ -180,7 +188,6 @@ private fun OrderCard(
                         )
                     }
                 }
-
 
                 Spacer(modifier = Modifier.height(2.dp))
 
@@ -286,79 +293,36 @@ private fun LegendaIcon(
     legenda: String,
     modifier: Modifier = Modifier
 ) {
-    val iconRes = when (legenda) {
-        "PEDIDO_SOFREU_CORTE" -> R.drawable.ic_maxima_legenda_corte
-        "PEDIDO_COM_FALTA" -> R.drawable.ic_maxima_legenda_falta
-        "PEDIDO_CANCELADO_ERP" -> R.drawable.ic_maxima_legenda_cancelamento
-        "PEDIDO_COM_DEVOLUCAO" -> R.drawable.ic_maxima_legenda_devolucao
-        "PEDIDO_FEITO_TELEMARKETING" -> R.drawable.ic_maxima_legenda_telemarketing
-        else -> null
-    }
+    val iconRes = OrderDialogLegendIconHelper.getLegendaIconResource(legenda)
 
     iconRes?.let { icon ->
         Image(
             painter = painterResource(id = icon),
-            contentDescription = legenda,
+            contentDescription = "",
             modifier = modifier.size(16.dp)
         )
     }
 }
 
 @Composable
-private fun LegendIcon(
+    private fun LegendIcon(
     legendas: List<String>,
     tipo: String,
     status: String,
     modifier: Modifier = Modifier
 ) {
-    val (backgroundColor, textColor, text) = when {
+    val iconConfig = OrderLegendIconHelper.getLegendIconConfig(legendas, tipo, status)
 
-        status.contains("processamento", ignoreCase = true) ->
-            Triple(Processing, Background, null)
-
-        legendas.contains("PEDIDO_RECUSADO_ERP") ->
-            Triple(Rejected, Background, "!")
-
-        status.equals("Pendente", ignoreCase = true) ->
-            Triple(Pending, Background, "P")
-
-        legendas.contains("PEDIDO_PENDENTE_ERP") ->
-            Triple(Pending, Background, "P")
-
-        legendas.contains("PEDIDO_BLOQUEADO_ERP") ->
-            Triple(Blocked, Background, "B")
-
-        legendas.contains("PEDIDO_LIBERADO_ERP") ->
-            Triple(Released, Background, "L")
-
-        legendas.contains("PEDIDO_MONTADO_ERP") ->
-            Triple(Mounted, Background, "M")
-
-        legendas.contains("PEDIDO_FATURADO_ERP") ->
-            Triple(Invoiced, Background, "F")
-
-        legendas.contains("PEDIDO_CANCELADO_ERP") ->
-            Triple(Canceled, Background, "C")
-
-        tipo.equals("ORCAMENTO", ignoreCase = true) ->
-            Triple(Budget, Background, "O")
-
-        else -> {
-            val firstChar = status.firstOrNull()?.toString()?.uppercase() ?: "?"
-            Triple(AppColors.Primary, Background, firstChar)
-        }
-    }
-
-    if (text == null) {
+    if (iconConfig.showIcon && iconConfig.iconResource != null) {
         Box(
             modifier = modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(backgroundColor),
+                .background(androidx.compose.ui.graphics.Color(iconConfig.backgroundColor)),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_maxima_em_processamento),
+                painter = painterResource(id = iconConfig.iconResource),
                 contentDescription = "Aguardando Crítica",
                 modifier = Modifier.size(24.dp)
             )
@@ -368,16 +332,16 @@ private fun LegendIcon(
             modifier = modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(backgroundColor),
+                .background(androidx.compose.ui.graphics.Color(iconConfig.backgroundColor)),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = text,
+                text = iconConfig.text ?: "?",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 ),
-                color = textColor,
+                color = androidx.compose.ui.graphics.Color(iconConfig.textColor),
                 textAlign = TextAlign.Center
             )
         }
@@ -389,16 +353,11 @@ private fun CriticaIcon(
     critica: String,
     modifier: Modifier = Modifier
 ) {
-    val icon = when (critica.uppercase()) {
-        "SUCESSO" -> R.drawable.ic_maxima_critica_sucesso
-        "FALHA_PARCIAL" -> R.drawable.ic_maxima_critica_alerta
-        "FALHA_TOTAL" -> R.drawable.ic_maxima_legenda_cancelamento
-        else -> R.drawable.ic_maxima_aguardando_critica
-    }
+    val icon = OrderCriticaIconHelper.getCriticaIconResource(critica)
 
     Image(
         painter = painterResource(id = icon),
-        contentDescription = critica,
+        contentDescription = OrderCriticaIconHelper.getCriticaDescription(critica),
         modifier = modifier.size(14.dp)
     )
 }
