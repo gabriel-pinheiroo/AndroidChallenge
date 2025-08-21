@@ -10,8 +10,12 @@ class SyncManager(private val context: Context) {
         private const val WORK_NAME = "data_sync"
     }
 
+    private val workManager: WorkManager by lazy {
+        WorkManager.getInstance(context)
+    }
+
     fun startPeriodicSync() {
-        WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        workManager.cancelUniqueWork(WORK_NAME)
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -24,7 +28,7 @@ class SyncManager(private val context: Context) {
             .setInitialDelay(15, TimeUnit.MINUTES)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        workManager.enqueueUniquePeriodicWork(
             WORK_NAME,
             ExistingPeriodicWorkPolicy.REPLACE,
             workRequest
@@ -32,6 +36,6 @@ class SyncManager(private val context: Context) {
     }
 
     fun stopSync() {
-        WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        workManager.cancelUniqueWork(WORK_NAME)
     }
 }
