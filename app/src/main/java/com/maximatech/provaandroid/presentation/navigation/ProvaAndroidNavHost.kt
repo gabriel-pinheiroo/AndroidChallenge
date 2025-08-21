@@ -2,34 +2,43 @@ package com.maximatech.provaandroid.presentation.navigation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.maximatech.provaandroid.presentation.designSystem.components.bottomBar.BottomBarMenuItem
+import androidx.navigation.navOptions
 import com.maximatech.provaandroid.presentation.features.clientDetails.navigation.clientDetailsScreen
 import com.maximatech.provaandroid.presentation.features.clientDetails.navigation.navigateToClientDetails
 import com.maximatech.provaandroid.presentation.features.clients.navigation.clientsScreen
+import com.maximatech.provaandroid.presentation.features.clients.navigation.navigateToClients
 import com.maximatech.provaandroid.presentation.features.orders.navigation.ordersScreen
+import com.maximatech.provaandroid.presentation.features.splash.navigation.splashScreen
 
 @Composable
 fun ProvaAndroidNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    paddingValues: PaddingValues = PaddingValues(),
-    onMenuSelected: (BottomBarMenuItem) -> Unit = {},
-    startDestination: Routes = Routes.Clients,
+    startDestination: Routes = Routes.Splash,
 ) {
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination,
-        modifier = modifier.padding(paddingValues),
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
     ) {
+        splashScreen(
+            onSplashCompleted = {
+                navController.navigateToClients(
+                    navOptions = navOptions {
+                        popUpTo(Routes.Splash) {
+                            inclusive = true
+                        }
+                    }
+                )
+            }
+        )
 
         clientsScreen(
             onNavigateToClientDetails = { clientName ->

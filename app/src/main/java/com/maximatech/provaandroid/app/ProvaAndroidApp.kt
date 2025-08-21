@@ -1,5 +1,6 @@
 package com.maximatech.provaandroid.app
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,7 +26,7 @@ val LocalTopBarManager = staticCompositionLocalOf<TopBarManager> {
 val LocalBottomBarManager = staticCompositionLocalOf<BottomBarManager> {
     error("No BottomBarManager provided")
 }
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProvaAndroidApp(
     state: ProvaAndroidAppState,
@@ -66,11 +67,9 @@ fun ProvaAndroidApp(
                         )
                     }
                 }
-            ) { paddingValues ->
+            ) {  paddingValues ->
                 ProvaAndroidNavHost(
-                    paddingValues = paddingValues,
                     navController = navController,
-                    onMenuSelected = onMenuSelected
                 )
             }
         }

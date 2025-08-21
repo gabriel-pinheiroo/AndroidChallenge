@@ -132,6 +132,7 @@ fun ClientDetailsScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .background(AppColors.CardBackground)
+                    .padding(top = 116.dp)
                     .padding(16.dp)
             ) {
                 when {

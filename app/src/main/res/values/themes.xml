@@ -1,7 +1,15 @@
-
 <resources>
     <style name="Base.Theme.ProvaAndroid" parent="android:Theme.Material.Light.NoActionBar">
     </style>
 
-    <style name="Theme.ProvaAndroid" parent="Base.Theme.ProvaAndroid" />
+    <style name="Theme.ProvaAndroid" parent="Base.Theme.ProvaAndroid">
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Theme.ProvaAndroid.Splash" parent="Base.Theme.ProvaAndroid">
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.ProvaAndroid</item>
+    </style>
 </resources>

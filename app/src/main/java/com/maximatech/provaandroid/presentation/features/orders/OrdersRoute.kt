@@ -80,6 +80,7 @@ fun OrdersScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(AppColors.CardBackground)
+                .padding(top = 116.dp)
                 .padding(16.dp)
         ) {
             when {
@@ -269,7 +270,7 @@ private fun OrderCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         order.legendas.forEach { legenda ->
-                            LegendaIcon(legenda = legenda)
+                            DialogLegendIcon(legenda = legenda)
                         }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
@@ -289,7 +290,7 @@ private fun OrderCard(
 }
 
 @Composable
-private fun LegendaIcon(
+private fun DialogLegendIcon(
     legenda: String,
     modifier: Modifier = Modifier
 ) {
@@ -305,7 +306,7 @@ private fun LegendaIcon(
 }
 
 @Composable
-    private fun LegendIcon(
+private fun LegendIcon(
     legendas: List<String>,
     tipo: String,
     status: String,

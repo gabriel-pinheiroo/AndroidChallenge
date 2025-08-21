@@ -43,6 +43,14 @@ val Color.Companion.SplashBackground
     get() = "#186096".toColor()
 
 @Stable
+val Color.Companion.SplashGradientStart
+    get() = "#186096".toColor()
+
+@Stable
+val Color.Companion.SplashGradientEnd
+    get() = "#053F6A".toColor()
+
+@Stable
 val Color.Companion.ClientText
     get() = "#000000".toColor()
 

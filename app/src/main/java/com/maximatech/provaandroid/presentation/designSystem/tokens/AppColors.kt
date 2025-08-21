@@ -124,4 +124,14 @@ object AppColors {
      * Cor de fundo do splash
      */
     val SplashBackground: Color = Color.SplashBackground
+
+    /**
+     * Cor inicial do gradiente da splash screen (azul mais claro)
+     */
+    val SplashGradientStart: Color = Color.SplashGradientStart
+
+    /**
+     * Cor final do gradiente da splash screen (azul mais escuro)
+     */
+    val SplashGradientEnd: Color = Color.SplashGradientEnd
 }
