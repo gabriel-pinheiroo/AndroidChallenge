@@ -16,14 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.core.domain.model.Order
 import com.maximatech.provaandroid.features.orders.OrdersState
 import com.maximatech.provaandroid.features.orders.OrdersViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
+import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -80,8 +79,8 @@ fun OrdersScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(AppColors.CardBackground)
-                .padding(top = 116.dp)
-                .padding(16.dp)
+                .padding(top = ExtraHugeSpacing)
+                .padding(MediumSpacing)
         ) {
             when {
                 state.hasError -> {
@@ -93,7 +92,7 @@ fun OrdersScreen(
 
                 else -> {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(SmallSpacing)
                     ) {
                         items(state.orders) { order ->
                             OrderCard(
@@ -125,14 +124,14 @@ private fun OrderCard(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MediumSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
             LegendIcon(
@@ -141,7 +140,7 @@ private fun OrderCard(
                 status = order.status
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(SmallMediumSpacing))
 
             Column(
                 modifier = Modifier.weight(1f)
@@ -154,7 +153,7 @@ private fun OrderCard(
                             text = "Nº Orca. RCA/ERP: ",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp
+                                fontSize = SmallFontSize
                             ),
                             color = AppColors.OnSurfaceLight
                         )
@@ -162,7 +161,7 @@ private fun OrderCard(
                             text = "${order.numeroPedRca} / ${order.numeroPedErp}",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp
+                                fontSize = SmallFontSize
                             ),
                             color = AppColors.OnSurfaceHigh
                         )
@@ -175,7 +174,7 @@ private fun OrderCard(
                             text = "Nº Ped. RCA/ERP: ",
                             style = MaterialTheme.typography.titleSmall.copy(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp
+                                fontSize = SmallFontSize
                             ),
                             color = AppColors.OnSurfaceLight,
                         )
@@ -183,14 +182,14 @@ private fun OrderCard(
                             text = "${order.numeroPedRca} / ${order.numeroPedErp}",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp
+                                fontSize = SmallFontSize
                             ),
                             color = AppColors.OnSurfaceHigh
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(DoubleSpacing))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -198,7 +197,7 @@ private fun OrderCard(
                     Text(
                         text = "Cliente: ",
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = 12.sp,
+                            fontSize = SmallFontSize,
                             fontWeight = FontWeight.Bold,
                         ),
                         color = AppColors.OnSurfaceLight,
@@ -208,7 +207,7 @@ private fun OrderCard(
                     Text(
                         text = "${order.codigoCliente} - ${order.nomeCliente}",
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = 12.sp,
+                            fontSize = SmallFontSize,
                             fontWeight = FontWeight.Bold,
                         ),
                         color = AppColors.OnSurfaceHigh,
@@ -217,7 +216,7 @@ private fun OrderCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(DoubleSpacing))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -225,21 +224,21 @@ private fun OrderCard(
                     Text(
                         text = order.status,
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = 12.sp,
+                            fontSize = SmallFontSize,
                             fontWeight = FontWeight.Bold
                         ),
                         color = AppColors.OnSurfaceHigh
                     )
 
                     if (order.critica.isNotEmpty()) {
-                        Spacer(modifier = Modifier.width(64.dp))
+                        Spacer(modifier = Modifier.width(HugeSpacing))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
                                 text = "Crítica: ",
                                 style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 12.sp,
+                                    fontSize = SmallFontSize,
                                     fontWeight = FontWeight.Bold
                                 ),
                                 color = AppColors.OnSurfaceLight
@@ -250,7 +249,7 @@ private fun OrderCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(SmallSpacing))
 
             Column(
                 horizontalAlignment = Alignment.End,
@@ -259,28 +258,28 @@ private fun OrderCard(
                 Text(
                     text = formatTime(order.data),
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = 10.sp
+                        fontSize = TinyFontSize
                     ),
                     color = AppColors.OnSurfaceLight
                 )
 
                 if (order.legendas.isNotEmpty()) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(TinySpacing),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         order.legendas.forEach { legenda ->
                             DialogLegendIcon(legenda = legenda)
                         }
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(TinySpacing))
                 }
 
                 Text(
                     text = "R$ 617,40",
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
+                        fontSize = SmallFontSize
                     ),
                     color = AppColors.OnSurfaceHigh
                 )
@@ -300,7 +299,7 @@ private fun DialogLegendIcon(
         Image(
             painter = painterResource(id = icon),
             contentDescription = "",
-            modifier = modifier.size(16.dp)
+            modifier = modifier.size(IconSizeMedium)
         )
     }
 }
@@ -317,7 +316,7 @@ private fun LegendIcon(
     if (iconConfig.showIcon && iconConfig.iconResource != null) {
         Box(
             modifier = modifier
-                .size(40.dp)
+                .size(CircularIconSize)
                 .clip(CircleShape)
                 .background(androidx.compose.ui.graphics.Color(iconConfig.backgroundColor)),
             contentAlignment = Alignment.Center
@@ -325,13 +324,13 @@ private fun LegendIcon(
             Image(
                 painter = painterResource(id = iconConfig.iconResource),
                 contentDescription = "Aguardando Crítica",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(IconSizeLarge)
             )
         }
     } else {
         Box(
             modifier = modifier
-                .size(40.dp)
+                .size(CircularIconSize)
                 .clip(CircleShape)
                 .background(androidx.compose.ui.graphics.Color(iconConfig.backgroundColor)),
             contentAlignment = Alignment.Center
@@ -340,7 +339,7 @@ private fun LegendIcon(
                 text = iconConfig.text ?: "?",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = SubtitleFontSize
                 ),
                 color = androidx.compose.ui.graphics.Color(iconConfig.textColor),
                 textAlign = TextAlign.Center
@@ -359,7 +358,7 @@ private fun CriticaIcon(
     Image(
         painter = painterResource(id = icon),
         contentDescription = OrderCriticaIconHelper.getCriticaDescription(critica),
-        modifier = modifier.size(14.dp)
+        modifier = modifier.size(IconSizeSmall)
     )
 }
 
@@ -375,14 +374,14 @@ private fun ErrorCard(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MediumSpacing),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -391,7 +390,7 @@ private fun ErrorCard(
                 color = AppColors.Error
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(SmallSpacing))
 
             Text(
                 text = message,
@@ -399,7 +398,7 @@ private fun ErrorCard(
                 color = AppColors.OnSurfaceMedium
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MediumSpacing))
 
             Button(
                 onClick = onRetry,

@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
+import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import com.maximatech.provaandroid.presentation.theme.ProvaAndroidTheme
 import kotlinx.coroutines.delay
 
@@ -31,8 +31,6 @@ fun SplashRoute(
     }
 
     SplashScreen(modifier = modifier)
-
-
 }
 
 @Composable
@@ -59,7 +57,7 @@ private fun SplashScreen(
             Image(
                 painter = painterResource(id = R.drawable.maxima_logotipo),
                 contentDescription = "Logo Maxima",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(LogoSize)
             )
         }
     }

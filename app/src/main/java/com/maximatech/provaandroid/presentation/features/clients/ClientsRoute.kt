@@ -13,14 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.core.domain.model.Client
 import com.maximatech.provaandroid.features.client.ClientState
 import com.maximatech.provaandroid.features.client.ClientViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
+import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -83,8 +82,8 @@ fun ClientsScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(AppColors.CardBackground)
-                .padding(top = 116.dp)
-                .padding(16.dp)
+                .padding(top = ExtraHugeSpacing)
+                .padding(MediumSpacing)
         ) {
             when {
                 state.hasError -> {
@@ -97,7 +96,7 @@ fun ClientsScreen(
 
                 else -> {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        verticalArrangement = Arrangement.spacedBy(SmallMediumSpacing)
                     ) {
                         item(key = state.client.id) {
                             ClientCard(
@@ -128,14 +127,14 @@ private fun ClientCard(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = MiddleElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MediumSpacing),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -145,17 +144,17 @@ private fun ClientCard(
                 Text(
                     text = "${client.id} - ${client.razaoSocial}",
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
+                    fontSize = NormalFontSize,
                     color = AppColors.OnSurfaceHigh,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(TinySpacing))
 
                 Text(
                     text = client.nomeFantasia,
-                    fontSize = 14.sp,
+                    fontSize = NormalFontSize,
                     color = AppColors.OnSurfaceLight,
                 )
             }
@@ -164,7 +163,7 @@ private fun ClientCard(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "Ver detalhes",
                 tint = AppColors.OnSurfaceHigh,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(IconSizeExtraLarge)
             )
         }
     }
@@ -190,14 +189,14 @@ private fun ErrorCard(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MediumSpacing),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -206,7 +205,7 @@ private fun ErrorCard(
                 color = AppColors.Error
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(SmallSpacing))
 
             Text(
                 text = message,
@@ -214,7 +213,7 @@ private fun ErrorCard(
                 color = AppColors.OnSurfaceMedium
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MediumSpacing))
 
             Button(
                 onClick = onRetry,

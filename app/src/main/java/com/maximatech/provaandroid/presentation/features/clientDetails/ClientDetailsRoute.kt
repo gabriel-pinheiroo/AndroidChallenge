@@ -14,8 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
@@ -26,6 +24,7 @@ import com.maximatech.provaandroid.core.utils.formatBrazilianDateWithValidation
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsState
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
+import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -101,16 +100,16 @@ fun ClientDetailsScreen(
                 SnackbarHost(snackbarHostState) { data ->
                     Card(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                            .padding(horizontal = MediumSpacing, vertical = SmallSpacing),
                         colors = CardDefaults.cardColors(
                             containerColor = AppColors.Primary
                         ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                        shape = RoundedCornerShape(12.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = HighElevation),
+                        shape = RoundedCornerShape(MediumRadius)
                     ) {
                         Box(
                             modifier = Modifier
-                                .padding(16.dp),
+                                .padding(MediumSpacing),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -132,8 +131,8 @@ fun ClientDetailsScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .background(AppColors.CardBackground)
-                    .padding(top = 116.dp)
-                    .padding(16.dp)
+                    .padding(top = ExtraHugeSpacing)
+                    .padding(MediumSpacing)
             ) {
                 when {
                     state.hasError -> {
@@ -145,7 +144,7 @@ fun ClientDetailsScreen(
 
                     else -> {
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(MediumSpacing)
                         ) {
                             item {
                                 ClientDataSection(client = state.client)
@@ -179,48 +178,48 @@ private fun ClientDataSection(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(MediumSpacing)
         ) {
             Text(
                 text = "Dados do cliente",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = SubtitleFontSize
                 ),
                 color = AppColors.OnSurfaceHigh,
             )
 
             HorizontalDivider(
-                thickness = 1.dp,
+                thickness = SingleSpacing,
                 color = AppColors.OnSurfaceLight.copy(0.3f)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MediumSpacing))
 
             Text(
                 text = "${client.id} - ${client.razaoSocial}",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontSize = NormalFontSize
                 ),
                 color = AppColors.OnSurfaceHigh,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = DoubleSpacing)
             )
 
             Text(
                 text = client.nomeFantasia,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = 14.sp
+                    fontSize = NormalFontSize
                 ),
                 color = AppColors.OnSurfaceMedium,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = SmallMediumSpacing)
             )
 
             ClientDataRow(label = "CPF:", value = client.cpf.ifEmpty { "Não informado" })
@@ -240,13 +239,13 @@ private fun ClientDataRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 2.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+            .padding(vertical = DoubleSpacing),
+        horizontalArrangement = Arrangement.spacedBy(TinySpacing)
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 12.sp,
+                fontSize = SmallFontSize,
                 fontWeight = FontWeight.Medium
             ),
             color = AppColors.OnSurfaceLight,
@@ -254,7 +253,7 @@ private fun ClientDataRow(
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 12.sp,
+                fontSize = SmallFontSize,
                 fontWeight = FontWeight.Medium
             ),
             color = AppColors.OnSurfaceHigh,
@@ -273,42 +272,42 @@ private fun ContactsSection(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(MediumSpacing)
         ) {
             Text(
                 text = "Contatos",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = SubtitleFontSize
                 ),
                 color = AppColors.OnSurfaceHigh,
             )
 
             HorizontalDivider(
-                thickness = 1.dp,
+                thickness = SingleSpacing,
                 color = AppColors.OnSurfaceLight.copy(0.3f)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MediumSpacing))
 
             if (client.contatos.isNotEmpty()) {
                 client.contatos.forEachIndexed { index, contact ->
                     ContactItem(contact = contact)
 
                     if (index < client.contatos.size - 1) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(MediumSpacing))
                         HorizontalDivider(
                             color = AppColors.OnSurfaceLight.copy(alpha = 0.2f),
-                            thickness = 1.dp
+                            thickness = SingleSpacing
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(MediumSpacing))
                     }
                 }
             } else {
@@ -316,7 +315,7 @@ private fun ContactsSection(
                     text = "Nenhum contato encontrado",
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppColors.OnSurfaceMedium,
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = MediumSpacing)
                 )
             }
         }
@@ -333,10 +332,10 @@ private fun ContactItem(
             text = contact.nome.ifEmpty { "Nome não informado" },
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = SubtitleFontSize
             ),
             color = AppColors.OnSurfaceHigh,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = SmallSpacing)
         )
 
         Row(
@@ -347,7 +346,7 @@ private fun ContactItem(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(TinySpacing)
                 ) {
                     ContactDetailRow(
                         label = "Telefone:",
@@ -357,12 +356,12 @@ private fun ContactItem(
                         painter = painterResource(R.drawable.ic_maxima_telefone),
                         contentDescription = "Telefone",
                         modifier = Modifier
-                            .size(16.dp)
+                            .size(IconSizeMedium)
                     )
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(TinySpacing)
                 ) {
                     ContactDetailRow(
                         label = "Celular:",
@@ -372,7 +371,7 @@ private fun ContactItem(
                         painter = painterResource(R.drawable.ic_maxima_telefone),
                         contentDescription = "Telefone",
                         modifier = Modifier
-                            .size(16.dp)
+                            .size(IconSizeMedium)
                     )
                 }
                 ContactDetailRow(
@@ -389,14 +388,14 @@ private fun ContactItem(
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(SmallSpacing))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(TinySpacing),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Box(
@@ -412,7 +411,7 @@ private fun ContactItem(
                         painter = painterResource(R.drawable.ic_maxima_email),
                         contentDescription = "E-mail",
                         modifier = Modifier
-                            .size(16.dp)
+                            .size(IconSizeMedium)
                     )
                 }
                 ContactDetailRow(
@@ -439,12 +438,12 @@ private fun ContactDetailRow(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.padding(vertical = 1.dp)
+        modifier = modifier.padding(vertical = SingleSpacing)
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 10.sp,
+                fontSize = TinyFontSize,
                 fontWeight = FontWeight.Medium
             ),
             color = AppColors.OnSurfaceLight
@@ -452,7 +451,7 @@ private fun ContactDetailRow(
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 10.sp,
+                fontSize = TinyFontSize,
                 fontWeight = FontWeight.Medium
             ),
             color = AppColors.OnSurfaceHigh,
@@ -471,11 +470,11 @@ private fun VerifyStatusButton(
         onClick = onVerifyClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(ButtonHeight),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppColors.VerifyAction
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(SmallRadius)
     ) {
         Text(
             text = "Verificar status do cliente",
@@ -499,14 +498,14 @@ private fun ErrorCard(
             containerColor = AppColors.Surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = LowElevation
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(MediumRadius)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MediumSpacing),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -515,7 +514,7 @@ private fun ErrorCard(
                 color = AppColors.Error
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(SmallSpacing))
 
             Text(
                 text = message,
@@ -523,7 +522,7 @@ private fun ErrorCard(
                 color = AppColors.OnSurfaceMedium
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MediumSpacing))
 
             Button(
                 onClick = onRetry,
