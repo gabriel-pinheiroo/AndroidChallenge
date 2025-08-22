@@ -32,7 +32,7 @@ class DefaultClientRepositoryImpl(
     override suspend fun getClientFromNetwork(): Result<Client> {
         return try {
             val response = api.getClient()
-            val client = response.cliente?.toClient() ?: Client.EMPTY
+            val client = response.getCliente()?.toClient() ?: Client.EMPTY
 
             localDataSource.saveClient(client)
 
@@ -52,7 +52,7 @@ class DefaultClientRepositoryImpl(
     private suspend fun getClientFromLocal(): Result<Client> {
         return try {
             val client: Client = localDataSource.getClient()
-                Result.success(client)
+            Result.success(client)
         } catch (exception: Throwable) {
             Result.failure(exception)
         }

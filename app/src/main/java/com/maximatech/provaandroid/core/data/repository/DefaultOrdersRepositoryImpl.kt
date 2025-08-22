@@ -32,7 +32,7 @@ class DefaultOrdersRepositoryImpl(
     override suspend fun getOrdersFromNetwork(): Result<List<Order>> {
         return try {
             val response = api.getOrders()
-            val orders = response.pedidos?.map { it.toOrder() } ?: emptyList()
+            val orders = response.getPedidos()?.map { it.toOrder() } ?: emptyList()
 
             localDataSource.saveOrders(orders)
 
@@ -46,8 +46,7 @@ class DefaultOrdersRepositoryImpl(
     private suspend fun getOrdersFromLocal(): Result<List<Order>> {
         return try {
             val orders: List<Order> = localDataSource.getOrders()
-                Result.success(orders)
-
+            Result.success(orders)
         } catch (exception: Throwable) {
             Result.failure(exception)
         }

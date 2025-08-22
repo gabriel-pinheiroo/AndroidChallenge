@@ -19,15 +19,15 @@ data class OrderEntity(
 ) {
     fun toOrder(): Order {
         return Order(
-            numeroPedRca = numeroPedRca,
-            numeroPedErp = numeroPedErp,
-            codigoCliente = codigoCliente,
-            nomeCliente = nomeCliente,
-            data = data,
-            status = status,
-            critica = critica,
-            tipo = tipo,
-            legendas = if (legendas.isNotEmpty()) {
+            numeroPedRca,
+            numeroPedErp,
+            codigoCliente,
+            nomeCliente,
+            data,
+            status,
+            critica,
+            tipo,
+            if (legendas.isNotEmpty()) {
                 try {
                     com.google.gson.Gson().fromJson(legendas, Array<String>::class.java).toList()
                 } catch (e: Exception) {

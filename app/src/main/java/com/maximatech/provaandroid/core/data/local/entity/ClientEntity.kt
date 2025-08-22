@@ -20,16 +20,16 @@ data class ClientEntity(
 ) {
     fun toClient(contacts: List<Contact>): Client {
         return Client(
-            id = id,
-            codigo = codigo,
-            razaoSocial = razaoSocial,
-            nomeFantasia = nomeFantasia,
-            cnpj = cnpj,
-            ramoAtividade = ramoAtividade,
-            endereco = endereco,
-            status = status,
-            cpf = cpf,
-            contatos = contacts
+            id,
+            codigo,
+            razaoSocial,
+            nomeFantasia,
+            cnpj,
+            ramoAtividade,
+            endereco,
+            status,
+            cpf,
+            contacts
         )
     }
 
@@ -78,16 +78,16 @@ data class ContactEntity(
 ) {
     fun toContact(): Contact {
         return Contact(
-            nome = nome,
-            telefone = telefone,
-            celular = celular,
-            conjuge = conjuge,
-            tipo = tipo,
-            time = time,
-            email = email,
-            hobbie = hobbie,
-            dataNascimento = dataNascimento,
-            dataNascimentoConjuge = dataNascimentoConjuge
+            nome,
+            telefone,
+            celular,
+            conjuge,
+            tipo,
+            time,
+            email,
+            hobbie,
+            dataNascimento,
+            dataNascimentoConjuge
         )
     }
 
