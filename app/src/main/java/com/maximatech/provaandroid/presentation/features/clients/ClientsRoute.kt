@@ -11,10 +11,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
+import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Client
 import com.maximatech.provaandroid.features.client.ClientState
 import com.maximatech.provaandroid.features.client.ClientViewModel
@@ -57,11 +59,12 @@ fun ClientsScreen(
     onClearError: () -> Unit = {}
 ) {
     val topBarManager = LocalTopBarManager.current
+    val title = stringResource(R.string.max_app)
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
         topBarManager.setTopBarConfig {
-            this.title = "MaxApp"
+            this.title = title
             showTitle = true
             showBackButton = false
             onBackClicked = onBackPressed
@@ -161,7 +164,7 @@ private fun ClientCard(
 
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Ver detalhes",
+                contentDescription = stringResource(R.string.see_details),
                 tint = AppColors.OnSurfaceHigh,
                 modifier = Modifier.size(IconSizeExtraLarge)
             )
@@ -200,7 +203,7 @@ private fun ErrorCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Erro ao carregar cliente",
+                text = stringResource(R.string.error_loading_client),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppColors.Error
             )
@@ -222,7 +225,7 @@ private fun ErrorCard(
                 )
             ) {
                 Text(
-                    text = "Tentar novamente",
+                    text = stringResource(R.string.try_again),
                     color = AppColors.OnPrimary
                 )
             }

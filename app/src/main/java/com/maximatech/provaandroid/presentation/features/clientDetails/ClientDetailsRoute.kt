@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -188,7 +189,7 @@ private fun ClientDataSection(
                 .padding(MediumSpacing)
         ) {
             Text(
-                text = "Dados do cliente",
+                text = stringResource(R.string.client_data),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = SubtitleFontSize
@@ -222,10 +223,22 @@ private fun ClientDataSection(
                 modifier = Modifier.padding(bottom = SmallMediumSpacing)
             )
 
-            ClientDataRow(label = "CPF:", value = client.cpf.ifEmpty { "Não informado" })
-            ClientDataRow(label = "CNPJ:", value = client.cnpj.ifEmpty { "Não informado" })
-            ClientDataRow(label = "Ramo de atividade:", value = client.ramoAtividade.ifEmpty { "Não informado" })
-            ClientDataRow(label = "Endereços:", value = client.endereco.ifEmpty { "Não informado" })
+            ClientDataRow(
+                label = stringResource(R.string.cpf_label),
+                value = client.cpf.ifEmpty { stringResource(R.string.not_informed) }
+            )
+            ClientDataRow(
+                label = stringResource(R.string.cnpj_label),
+                value = client.cnpj.ifEmpty { stringResource(R.string.not_informed) }
+            )
+            ClientDataRow(
+                label = stringResource(R.string.business_activity_label),
+                value = client.ramoAtividade.ifEmpty { stringResource(R.string.not_informed) }
+            )
+            ClientDataRow(
+                label = stringResource(R.string.addresses_label),
+                value = client.endereco.ifEmpty { stringResource(R.string.not_informed) }
+            )
         }
     }
 }
@@ -282,7 +295,7 @@ private fun ContactsSection(
                 .padding(MediumSpacing)
         ) {
             Text(
-                text = "Contatos",
+                text = stringResource(R.string.contacts),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = SubtitleFontSize
@@ -312,7 +325,7 @@ private fun ContactsSection(
                 }
             } else {
                 Text(
-                    text = "Nenhum contato encontrado",
+                    text = stringResource(R.string.no_contacts_found),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppColors.OnSurfaceMedium,
                     modifier = Modifier.padding(vertical = MediumSpacing)
@@ -329,7 +342,7 @@ private fun ContactItem(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = contact.nome.ifEmpty { "Nome não informado" },
+            text = contact.nome.ifEmpty { stringResource(R.string.name_not_informed) },
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = SubtitleFontSize
@@ -349,12 +362,12 @@ private fun ContactItem(
                     horizontalArrangement = Arrangement.spacedBy(TinySpacing)
                 ) {
                     ContactDetailRow(
-                        label = "Telefone:",
-                        value = contact.telefone.ifEmpty { "Não informado" }
+                        label = stringResource(R.string.phone_label),
+                        value = contact.telefone.ifEmpty { stringResource(R.string.not_informed) }
                     )
                     Image(
                         painter = painterResource(R.drawable.ic_maxima_telefone),
-                        contentDescription = "Telefone",
+                        contentDescription = stringResource(R.string.phone),
                         modifier = Modifier
                             .size(IconSizeMedium)
                     )
@@ -364,27 +377,27 @@ private fun ContactItem(
                     horizontalArrangement = Arrangement.spacedBy(TinySpacing)
                 ) {
                     ContactDetailRow(
-                        label = "Celular:",
-                        value = formatBrazilianCellPhone(contact.celular.ifEmpty { "Não informado" })
+                        label = stringResource(R.string.mobile_label),
+                        value = formatBrazilianCellPhone(contact.celular.ifEmpty { stringResource(R.string.not_informed) })
                     )
                     Image(
                         painter = painterResource(R.drawable.ic_maxima_telefone),
-                        contentDescription = "Telefone",
+                        contentDescription = stringResource(R.string.phone),
                         modifier = Modifier
                             .size(IconSizeMedium)
                     )
                 }
                 ContactDetailRow(
-                    label = "Cônjuge:",
-                    value = contact.conjuge.ifEmpty { "Não informado" }
+                    label = stringResource(R.string.spouse_label),
+                    value = contact.conjuge.ifEmpty { stringResource(R.string.not_informed) }
                 )
                 ContactDetailRow(
-                    label = "Tipo:",
-                    value = contact.tipo.ifEmpty { "Não informado" }
+                    label = stringResource(R.string.type_label),
+                    value = contact.tipo.ifEmpty { stringResource(R.string.not_informed) }
                 )
                 ContactDetailRow(
-                    label = "Hobbie:",
-                    value = contact.hobbie.ifEmpty { "Não informado" }
+                    label = stringResource(R.string.hobby_label),
+                    value = contact.hobbie.ifEmpty { stringResource(R.string.not_informed) }
                 )
             }
 
@@ -403,28 +416,28 @@ private fun ContactItem(
                         contentAlignment = Alignment.CenterStart
                     ) {
                         ContactDetailRow(
-                            label = "E-mail:",
-                            value = contact.email.ifEmpty { "Não informado" }
+                            label = stringResource(R.string.email_label),
+                            value = contact.email.ifEmpty { stringResource(R.string.not_informed) }
                         )
                     }
                     Image(
                         painter = painterResource(R.drawable.ic_maxima_email),
-                        contentDescription = "E-mail",
+                        contentDescription = stringResource(R.string.email),
                         modifier = Modifier
                             .size(IconSizeMedium)
                     )
                 }
                 ContactDetailRow(
-                    label = "Data Nasc.:",
-                    value = formatBrazilianDateWithValidation(contact.dataNascimento.ifEmpty { "Não informado" })
+                    label = stringResource(R.string.birth_date_label),
+                    value = formatBrazilianDateWithValidation(contact.dataNascimento.ifEmpty { stringResource(R.string.not_informed) })
                 )
                 ContactDetailRow(
-                    label = "Data Nasc. Cônjuge:",
-                    value = contact.dataNascimentoConjuge ?: "Não informado"
+                    label = stringResource(R.string.spouse_birth_date_label),
+                    value = contact.dataNascimentoConjuge ?: stringResource(R.string.not_informed)
                 )
                 ContactDetailRow(
-                    label = "Time:",
-                    value = contact.time.ifEmpty { "Não informado" }
+                    label = stringResource(R.string.team_label),
+                    value = contact.time.ifEmpty { stringResource(R.string.not_informed) }
                 )
             }
         }
@@ -477,7 +490,7 @@ private fun VerifyStatusButton(
         shape = RoundedCornerShape(SmallRadius)
     ) {
         Text(
-            text = "Verificar status do cliente",
+            text = stringResource(R.string.verify_client_status),
             style = MaterialTheme.typography.labelLarge.copy(
                 fontWeight = FontWeight.Bold
             ),
@@ -509,7 +522,7 @@ private fun ErrorCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Erro ao carregar detalhes do cliente",
+                text = stringResource(R.string.error_loading_client_details),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppColors.Error
             )
@@ -531,7 +544,7 @@ private fun ErrorCard(
                 )
             ) {
                 Text(
-                    text = "Tentar novamente",
+                    text = stringResource(R.string.try_again),
                     color = AppColors.OnPrimary
                 )
             }

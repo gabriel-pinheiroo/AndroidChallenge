@@ -13,11 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
+import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Order
 import com.maximatech.provaandroid.features.orders.OrdersState
 import com.maximatech.provaandroid.features.orders.OrdersViewModel
@@ -52,11 +54,12 @@ fun OrdersScreen(
 ) {
     val topBarManager = LocalTopBarManager.current
     var showLegendsDialog by remember { mutableStateOf(false) }
+    val title = stringResource(R.string.max_app)
 
     LaunchedEffect(Unit) {
         topBarManager.showTopBar()
         topBarManager.setTopBarConfig {
-            this.title = "MaxApp"
+            this.title = title
             showTitle = true
             showMenuButton = true
             this.onMenuClicked = {
@@ -150,7 +153,7 @@ private fun OrderCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Nº Orca. RCA/ERP: ",
+                            text = stringResource(R.string.quote_number_rca_erp),
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = SmallFontSize
@@ -171,7 +174,7 @@ private fun OrderCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Nº Ped. RCA/ERP: ",
+                            text = stringResource(R.string.order_number_rca_erp),
                             style = MaterialTheme.typography.titleSmall.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = SmallFontSize
@@ -195,7 +198,7 @@ private fun OrderCard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Cliente: ",
+                        text = stringResource(R.string.client_label),
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontSize = SmallFontSize,
                             fontWeight = FontWeight.Bold,
@@ -236,7 +239,7 @@ private fun OrderCard(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "Crítica: ",
+                                text = stringResource(R.string.critic_label),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     fontSize = SmallFontSize,
                                     fontWeight = FontWeight.Bold
@@ -276,7 +279,7 @@ private fun OrderCard(
                 }
 
                 Text(
-                    text = "R$ 617,40",
+                    text = stringResource(R.string.price_format),
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize = SmallFontSize
@@ -323,7 +326,7 @@ private fun LegendIcon(
         ) {
             Image(
                 painter = painterResource(id = iconConfig.iconResource),
-                contentDescription = "Aguardando Crítica",
+                contentDescription = stringResource(R.string.awaiting_critic),
                 modifier = Modifier.size(IconSizeLarge)
             )
         }
@@ -385,7 +388,7 @@ private fun ErrorCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Erro ao carregar pedidos",
+                text = stringResource(R.string.error_loading_orders),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppColors.Error
             )
@@ -407,7 +410,7 @@ private fun ErrorCard(
                 )
             ) {
                 Text(
-                    text = "Tentar novamente",
+                    text = stringResource(R.string.try_again),
                     color = AppColors.OnPrimary
                 )
             }
