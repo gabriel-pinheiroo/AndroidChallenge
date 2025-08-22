@@ -16,13 +16,33 @@ import com.maximatech.provaandroid.core.utils.update
 data class OrdersState(
     val isLoading: Boolean = false,
     val hasError: Boolean = false,
-    val orders: List<Order> = emptyList(),
+    val allOrders: List<Order> = emptyList(),
+    val filteredOrders: List<Order> = emptyList(),
+    val searchQuery: String = "",
     val errorMessage: String = ""
 ) {
     fun onLoading() = copy(isLoading = true, hasError = false, errorMessage = "")
     fun onLoadingFinished() = copy(isLoading = false)
-    fun onSuccess(orders: List<Order>) = copy(orders = orders, hasError = false, errorMessage = "")
+
+    fun onSuccess(orders: List<Order>) = copy(
+        allOrders = orders,
+        filteredOrders = orders,
+        hasError = false,
+        errorMessage = ""
+    )
+
     fun onError(message: String) = copy(hasError = true, errorMessage = message)
+
+    fun onSearchQueryChanged(query: String): OrdersState {
+        val filtered = if (query.isBlank()) {
+            allOrders
+        } else {
+            allOrders.filter { order ->
+                order.numeroPedRca.toString().contains(query, ignoreCase = true)
+            }
+        }
+        return copy(searchQuery = query, filteredOrders = filtered)
+    }
 
     companion object {
         internal val Idle = OrdersState()
@@ -57,6 +77,14 @@ class OrdersViewModel(
                 }
             }
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _state.update { onSearchQueryChanged(query) }
+    }
+
+    fun clearSearch() {
+        _state.update { onSearchQueryChanged("") }
     }
 
     fun clearError() {

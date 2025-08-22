@@ -7,14 +7,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,7 +50,9 @@ fun OrdersRoute(
     OrdersScreen(
         modifier = modifier,
         state = state,
-        onRetry = viewModel::getOrders
+        onRetry = viewModel::getOrders,
+        onSearchQueryChanged = viewModel::updateSearchQuery,
+        onClearSearch = viewModel::clearSearch
     )
 }
 
@@ -50,7 +60,9 @@ fun OrdersRoute(
 fun OrdersScreen(
     modifier: Modifier = Modifier,
     state: OrdersState,
-    onRetry: () -> Unit = {}
+    onRetry: () -> Unit = {},
+    onSearchQueryChanged: (String) -> Unit = {},
+    onClearSearch: () -> Unit = {}
 ) {
     val topBarManager = LocalTopBarManager.current
     var showLegendsDialog by remember { mutableStateOf(false) }
@@ -94,13 +106,23 @@ fun OrdersScreen(
                 }
 
                 else -> {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(SmallSpacing)
-                    ) {
-                        items(state.orders) { order ->
-                            OrderCard(
-                                order = order
-                            )
+                    SearchField(
+                        searchQuery = state.searchQuery,
+                        onSearchQueryChanged = onSearchQueryChanged,
+                        onClearSearch = onClearSearch
+                    )
+
+                    Spacer(modifier = Modifier.height(MediumSpacing))
+
+                    if (state.filteredOrders.isEmpty() && state.searchQuery.isNotBlank()) {
+                        EmptySearchResults()
+                    } else {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(SmallSpacing)
+                        ) {
+                            items(state.filteredOrders) { order ->
+                                OrderCard(order = order)
+                            }
                         }
                     }
                 }
@@ -112,6 +134,109 @@ fun OrdersScreen(
         LegendsDialog(
             onDismiss = { showLegendsDialog = false }
         )
+    }
+}
+
+@Composable
+private fun SearchField(
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    onClearSearch: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    OutlinedTextField(
+        value = searchQuery,
+        onValueChange = onSearchQueryChanged,
+        modifier = modifier.fillMaxWidth(),
+        placeholder = {
+            Text(
+                text = stringResource(R.string.search_order_hint),
+                color = AppColors.OnSurfaceLight
+            )
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = stringResource(R.string.search),
+                tint = AppColors.OnSurfaceLight
+            )
+        },
+        trailingIcon = {
+            if (searchQuery.isNotEmpty()) {
+                IconButton(
+                    onClick = onClearSearch
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(R.string.clear_search),
+                        tint = AppColors.OnSurfaceLight
+                    )
+                }
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search,
+            keyboardType = KeyboardType.Number
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                keyboardController?.hide()
+            }
+        ),
+        singleLine = true,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = AppColors.Primary,
+            unfocusedBorderColor = AppColors.OnSurfaceLight.copy(alpha = 0.5f),
+            focusedTextColor = AppColors.OnSurfaceHigh,
+            unfocusedTextColor = AppColors.OnSurfaceHigh,
+            cursorColor = AppColors.Primary
+        ),
+        shape = RoundedCornerShape(MediumRadius)
+    )
+}
+
+@Composable
+private fun EmptySearchResults(
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.Surface
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = LowElevation
+        ),
+        shape = RoundedCornerShape(MediumRadius)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(VeryLargeSpacing),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = AppColors.OnSurfaceLight,
+                    modifier = Modifier.size(LargeHugeSpacing)
+                )
+
+                Spacer(modifier = Modifier.height(MediumSpacing))
+
+                Text(
+                    text = stringResource(R.string.no_orders_found),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = AppColors.OnSurfaceLight,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
 

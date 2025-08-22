@@ -38,4 +38,8 @@
     <string name="client_id_format">%1$s - %2$s</string>
     <string name="order_numbers_format">%1$s / %2$s</string>
     <string name="client_code_name_format">%1$s - %2$s</string>
+    <string name="search_order_hint">Buscar por número do pedido RCA</string>
+    <string name="no_orders_found">Nenhum pedido encontrado</string>
+    <string name="search">Buscar</string>
+    <string name="clear_search">Limpar busca</string>
 </resources>
