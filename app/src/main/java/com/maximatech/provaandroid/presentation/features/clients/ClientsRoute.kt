@@ -18,8 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Client
-import com.maximatech.provaandroid.features.client.ClientState
-import com.maximatech.provaandroid.features.client.ClientViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import org.koin.androidx.compose.koinViewModel

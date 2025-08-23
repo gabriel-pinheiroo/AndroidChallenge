@@ -22,8 +22,6 @@ import com.maximatech.provaandroid.core.domain.model.Client
 import com.maximatech.provaandroid.core.domain.model.Contact
 import com.maximatech.provaandroid.core.utils.formatBrazilianCellPhone
 import com.maximatech.provaandroid.core.utils.formatBrazilianDateWithValidation
-import com.maximatech.provaandroid.features.clientDetails.ClientDetailsState
-import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import org.koin.androidx.compose.koinViewModel

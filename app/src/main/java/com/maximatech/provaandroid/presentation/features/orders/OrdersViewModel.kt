@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Immutable
 import com.maximatech.provaandroid.core.domain.model.Order
-import com.maximatech.provaandroid.core.utils.update
 
 @Immutable
 data class OrdersState(
@@ -24,27 +24,6 @@ data class OrdersState(
     val errorMessage: String = "",
     val isSearching: Boolean = false
 ) {
-    fun onLoading() = copy(isLoading = true, hasError = false, errorMessage = "")
-    fun onLoadingFinished() = copy(isLoading = false)
-
-    fun onSuccess(orders: List<Order>) = copy(
-        allOrders = orders,
-        filteredOrders = if (searchQuery.isBlank()) orders else filteredOrders,
-        hasError = false,
-        errorMessage = ""
-    )
-
-    fun onError(message: String) = copy(hasError = true, errorMessage = message)
-
-    fun onSearchStarted() = copy(isSearching = true)
-
-    fun onSearchFinished(filteredOrders: List<Order>) = copy(
-        filteredOrders = filteredOrders,
-        isSearching = false
-    )
-
-    fun onSearchQueryChanged(query: String) = copy(searchQuery = query)
-
     companion object {
         internal val Idle = OrdersState()
     }
@@ -74,7 +53,9 @@ class OrdersViewModel(
                 .distinctUntilChanged()
                 .onEach { query ->
                     if (query.isNotBlank()) {
-                        _state.update { onSearchStarted() }
+                        _state.update {
+                            it.copy(isSearching = true)
+                        }
                     }
                 }
                 .collect { query ->
@@ -94,26 +75,43 @@ class OrdersViewModel(
         }
 
         _state.update {
-            onSearchFinished(filtered)
+            it.copy(
+                filteredOrders = filtered,
+                isSearching = false
+            )
         }
     }
 
     fun getOrders() {
         viewModelScope.launch {
-            _state.update { onLoading() }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    hasError = false,
+                    errorMessage = ""
+                )
+            }
 
             try {
                 val orders = getOrdersUseCase().getOrThrow()
                 _state.update {
-                    onLoadingFinished().onSuccess(orders)
+                    it.copy(
+                        isLoading = false,
+                        allOrders = orders,
+                        filteredOrders = if (it.searchQuery.isBlank()) orders else it.filteredOrders,
+                        hasError = false,
+                        errorMessage = ""
+                    )
                 }
                 if (searchQueryFlow.value.isNotBlank()) {
                     performSearch(searchQueryFlow.value)
                 }
             } catch (exception: Throwable) {
                 _state.update {
-                    onLoadingFinished().onError(
-                        exception.message ?: "Erro ao carregar pedidos"
+                    it.copy(
+                        isLoading = false,
+                        hasError = true,
+                        errorMessage = exception.message ?: "Erro ao carregar pedidos"
                     )
                 }
             }
@@ -121,18 +119,28 @@ class OrdersViewModel(
     }
 
     fun updateSearchQuery(query: String) {
-        _state.update { onSearchQueryChanged(query) }
+        _state.update {
+            it.copy(searchQuery = query)
+        }
         searchQueryFlow.value = query
     }
 
     fun clearSearch() {
         searchQueryFlow.value = ""
         _state.update {
-            onSearchQueryChanged("").onSearchFinished(allOrders)
+            it.copy(
+                searchQuery = "",
+                filteredOrders = it.allOrders
+            )
         }
     }
 
     fun clearError() {
-        _state.update { copy(hasError = false, errorMessage = "") }
+        _state.update {
+            it.copy(
+                hasError = false,
+                errorMessage = ""
+            )
+        }
     }
 }

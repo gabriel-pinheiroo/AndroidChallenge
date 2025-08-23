@@ -1,5 +1,4 @@
-// features/client/ClientViewModel.kt
-package com.maximatech.provaandroid.features.client
+package com.maximatech.provaandroid.presentation.features.clients
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,9 +6,9 @@ import com.maximatech.provaandroid.core.domain.usecase.GetClientUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Immutable
-import com.maximatech.provaandroid.core.utils.update
 import com.maximatech.provaandroid.core.domain.model.Client
 
 @Immutable
@@ -19,11 +18,6 @@ data class ClientState(
     val client: Client = Client.EMPTY,
     val errorMessage: String = ""
 ) {
-    fun onLoading() = copy(isLoading = true, hasError = false, errorMessage = "")
-    fun onLoadingFinished() = copy(isLoading = false)
-    fun onSuccess(client: Client) = copy(client = client, hasError = false, errorMessage = "")
-    fun onError(message: String) = copy(hasError = true, errorMessage = message)
-
     companion object {
         internal val Idle = ClientState()
     }
@@ -42,17 +36,30 @@ class ClientViewModel(
 
     fun getClient() {
         viewModelScope.launch {
-            _state.update { onLoading() }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    hasError = false,
+                    errorMessage = ""
+                )
+            }
 
             try {
                 val client = getClientUseCase().getOrThrow()
                 _state.update {
-                    onLoadingFinished().onSuccess(client)
+                    it.copy(
+                        isLoading = false,
+                        client = client,
+                        hasError = false,
+                        errorMessage = ""
+                    )
                 }
             } catch (exception: Throwable) {
                 _state.update {
-                    onLoadingFinished().onError(
-                        exception.message ?: "Erro ao carregar cliente"
+                    it.copy(
+                        isLoading = false,
+                        hasError = true,
+                        errorMessage = exception.message ?: "Erro ao carregar cliente"
                     )
                 }
             }
@@ -60,6 +67,11 @@ class ClientViewModel(
     }
 
     fun clearError() {
-        _state.update { copy(hasError = false, errorMessage = "") }
+        _state.update {
+            it.copy(
+                hasError = false,
+                errorMessage = ""
+            )
+        }
     }
 }
