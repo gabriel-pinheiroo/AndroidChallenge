@@ -8,6 +8,7 @@ import com.maximatech.provaandroid.core.domain.repository.OrdersRepository
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.koin.core.context.GlobalContext
+import java.util.concurrent.atomic.AtomicBoolean
 
 class DataSyncWorker(
     context: Context,
@@ -16,22 +17,21 @@ class DataSyncWorker(
 
     companion object {
         private val syncMutex = Mutex()
-
-        @Volatile
-        private var isSyncing = false
     }
 
+    private var isSyncing = AtomicBoolean(false)
+
     override suspend fun doWork(): Result {
-        if (isSyncing) {
+        if (isSyncing.get()) {
             return Result.success()
         }
 
         return syncMutex.withLock {
-            if (isSyncing) {
+            if (isSyncing.get()) {
                 return Result.success()
             }
 
-            isSyncing = true
+            isSyncing.set(true)
 
             try {
                 val koin = GlobalContext.get()
@@ -50,7 +50,7 @@ class DataSyncWorker(
                 println("Erro na sincronização: ${e.message}")
                 Result.failure()
             } finally {
-                isSyncing = false
+                isSyncing.set(false)
             }
         }
     }
