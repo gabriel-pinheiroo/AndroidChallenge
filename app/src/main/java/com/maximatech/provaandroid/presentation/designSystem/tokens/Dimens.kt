@@ -5,11 +5,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Spacing dimensions used for:
- * - Padding and Margin
- * - Width and Height
- */
 val NoSpacing: Dp
     get() = 0.dp
 val SingleSpacing: Dp
@@ -37,9 +32,6 @@ val ExtraHugeSpacing: Dp
 val ExtraGiantSpacing: Dp
     get() = 200.dp
 
-/**
- * Component specific dimensions
- */
 val ButtonHeight: Dp
     get() = 48.dp
 val IconSizeSmall: Dp
@@ -55,9 +47,6 @@ val CircularIconSize: Dp
 val LogoSize: Dp
     get() = 200.dp
 
-/**
- * All font sizes used in the app
- */
 val TinyFontSize: TextUnit
     get() = 10.sp
 val SmallFontSize: TextUnit
@@ -67,17 +56,11 @@ val NormalFontSize: TextUnit
 val SubtitleFontSize: TextUnit
     get() = 16.sp
 
-/**
- * Corner radius
- */
 val SmallRadius: Dp
     get() = 8.dp
 val MediumRadius: Dp
     get() = 12.dp
 
-/**
- * Elevation
- */
 val LowElevation: Dp
     get() = 2.dp
 val MiddleElevation: Dp

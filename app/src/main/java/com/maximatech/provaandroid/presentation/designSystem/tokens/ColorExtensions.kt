@@ -75,14 +75,6 @@ val Color.Companion.ClientVerifyStatusButton
     get() = "#638735".toColor()
 
 @Stable
-val Color.Companion.OrderHistoryText
-    get() = "#000000".toColor()
-
-@Stable
-val Color.Companion.OrderHistoryLabels
-    get() = "#95989A".toColor()
-
-@Stable
 val Color.Companion.OrderStatusProcessing
     get() = "#95989A".toColor()
 
@@ -117,39 +109,3 @@ val Color.Companion.OrderStatusCanceled
 @Stable
 val Color.Companion.OrderStatusBudget
     get() = "#2D3E4E".toColor()
-
-@Stable
-val Color.Companion.CriticTypeWaitingReturn
-    get() = "#757575".toColor()
-
-@Stable
-val Color.Companion.CriticTypeSuccess
-    get() = "#648638".toColor()
-
-@Stable
-val Color.Companion.CriticTypePartialFailure
-    get() = "#FF9900".toColor()
-
-@Stable
-val Color.Companion.CriticTypeTotalFailure
-    get() = "#F40613".toColor()
-
-@Stable
-val Color.Companion.LegendCutOrder
-    get() = "#FF9900".toColor()
-
-@Stable
-val Color.Companion.LegendMissingOrder
-    get() = "#BF595F".toColor()
-
-@Stable
-val Color.Companion.LegendCanceledErp
-    get() = "#F40613".toColor()
-
-@Stable
-val Color.Companion.LegendWithDevolution
-    get() = "#186096".toColor()
-
-@Stable
-val Color.Companion.LegendTelemarketing
-    get() = "#648638".toColor()
