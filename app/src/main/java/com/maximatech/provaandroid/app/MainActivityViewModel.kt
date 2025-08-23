@@ -17,7 +17,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     private fun setMenuDefaults() {
-        buildSet {
+        val menuItems = buildSet {
             add(
                 BottomBarMenuItem(
                     name = "Usuários",
@@ -35,9 +35,9 @@ class MainActivityViewModel : ViewModel() {
                     inactiveIcon = R.drawable.ic_maxima_historico_pedidos_inativo
                 )
             )
-        }.let {
-            _menu.update { menu -> it }
         }
+
+        _menu.update { menuItems }
     }
 
     fun onMenuSelected(item: BottomBarMenuItem) {
