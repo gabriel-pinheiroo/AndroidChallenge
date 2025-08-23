@@ -4,6 +4,7 @@ import android.app.Application
 import com.maximatech.provaandroid.BuildConfig
 import com.maximatech.provaandroid.core.data.worker.SyncManager
 import com.maximatech.provaandroid.di.*
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -11,13 +12,7 @@ import org.koin.core.logger.Level
 
 class ProvaAndroidApplication : Application() {
 
-    private val syncManager: SyncManager by lazy {
-        try {
-            org.koin.core.context.GlobalContext.get().get<SyncManager>()
-        } catch (e: Throwable) {
-            throw IllegalStateException("SyncManager não pode ser inicializado: ${e.message}", e)
-        }
-    }
+    private val syncManager: SyncManager by inject()
 
     override fun onCreate() {
         super.onCreate()
