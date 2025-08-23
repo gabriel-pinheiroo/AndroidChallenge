@@ -3,7 +3,7 @@ package com.maximatech.provaandroid.di
 import com.maximatech.provaandroid.app.MainActivityViewModel
 import com.maximatech.provaandroid.features.client.ClientViewModel
 import com.maximatech.provaandroid.features.clientDetails.ClientDetailsViewModel
-import com.maximatech.provaandroid.features.orders.OrdersViewModel
+import com.maximatech.provaandroid.presentation.features.orders.OrdersViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

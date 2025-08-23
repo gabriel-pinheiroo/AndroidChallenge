@@ -29,8 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Order
-import com.maximatech.provaandroid.features.orders.OrdersState
-import com.maximatech.provaandroid.features.orders.OrdersViewModel
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
@@ -109,7 +107,8 @@ fun OrdersScreen(
                     SearchField(
                         searchQuery = state.searchQuery,
                         onSearchQueryChanged = onSearchQueryChanged,
-                        onClearSearch = onClearSearch
+                        onClearSearch = onClearSearch,
+                        isSearching = state.isSearching
                     )
 
                     Spacer(modifier = Modifier.height(MediumSpacing))
@@ -142,6 +141,7 @@ private fun SearchField(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onClearSearch: () -> Unit,
+    isSearching: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -157,11 +157,19 @@ private fun SearchField(
             )
         },
         leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.search),
-                tint = AppColors.OnSurfaceLight
-            )
+            if (isSearching) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(IconSizeMedium),
+                    color = AppColors.Primary,
+                    strokeWidth = DoubleSpacing
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(R.string.search),
+                    tint = AppColors.OnSurfaceLight
+                )
+            }
         },
         trailingIcon = {
             if (searchQuery.isNotEmpty()) {
