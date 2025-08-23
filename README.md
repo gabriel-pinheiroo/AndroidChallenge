@@ -1,131 +1,119 @@
-Você deverá criar um app que irá consumir uma API, persistir as informações no banco e apresentar os dados no layout proposto. 
+# Maxima Tech - Android Challenge
 
-**Instruções**
+Application that consumes REST API to display clients and orders data with offline support and background synchronization.
 
-Faça um fork deste projeto em seu repositório. 
+[Leia em Português](README.pt.md)
 
-Caso o projeto seja privado, adicione o usuário **MaximaTechAndroid** como colaborador do projeto, caso seja publico, nos envie somente o caminho do repositório. 
+## Tech Stack
 
-### API
+**Core**
+- Kotlin - Main development language (80%)
+- Java - Supporting language (20%)
+- Jetpack Compose - UI toolkit
+- Material Design 3 - Design system
 
-O App deverá consumir os seguintes endpoints:
+**Networking**
+- Retrofit - HTTP client
+- OkHttp - Network interceptor
+- Gson - JSON serialization
 
-Clientes:
-[Máxima Tech · Apiary](https://maximatech.docs.apiary.io/#reference/0/android/cliente)
+**Database**
+- Room - Local database
 
-Pedidos:
-[Máxima Tech · Apiary](https://maximatech.docs.apiary.io/#reference/0/android/pedido)
-### Layouts
+**Architecture**
+- MVVM - Model-View-ViewModel pattern
+- Clean Architecture - Layered architecture
+- Coroutines - Asynchronous programming
+- Flow - Reactive streams
 
-Os layouts a serem seguidos estão presentes no fim do documento (clique na imagem para amplia-la).
+**Dependency Injection**
+- Koin - Dependency injection framework
 
-1. Splash
-2. Lista de clientes
-3. Tela de detalhe dos clientes
-4. Lista de pedidos
-5. Legendas
+**Background Tasks**
+- WorkManager - Periodic data synchronization
+- Connectivity Manager - Network state monitoring
 
-### Fluxo do app
+**Resources Management**
+- Custom Dimens class - Centralized spacing and sizing values
+- String Resources - Text concatenation and localization support
 
-Deverá ser apresentada a Splash e logo em seguida a tela contendo um navegação onde o primeiro item será a lista de clientes e a segunda a lista de pedidos. 
+**Testing**
+- JUnit - Unit testing framework
+- MockK - Mocking framework
 
-Ao clicar em um cliente, deverá ser apresentada uma tela contendo as informações do cliente e deverá ser possível retornar a a tela anterior utilizando a seta de navegação.
+## Architecture
 
-Ao clicar em "Verificar status do cliente", deverá ser apresentado um Toast/Snackbar informando o Status do Cliente
+The project follows Clean Architecture principles with MVVM pattern:
 
-Na tela de pedidos, deverá ser possível pesquisar o pedido por **número do pedido RCA**.
+**Presentation Layer**
+- Compose UI screens
+- ViewModels with state management
+- Navigation component
 
-Na tela de pedidos, deverá haver um menu onde será possível ver a legenda dos indicadores. 
+**Domain Layer**
+- Use Cases for business logic
+- Repository interfaces
+- Domain models
 
-### Requisitos obrigatórios
+**Data Layer**
+- Repository implementations
+- Remote data source (API)
+- Local data source (Room database)
 
-- Deverá conter a Splash.
-- Requisição da API utilizando **Retrofit**.
-- Os dados deverão ser persistidos no banco de dados utilizando **Room**.
-- A origem da consulta (banco ou rest) deverá ser definida pelo status de conectividade do aparelho.
-- Deverá ser feita injeção de dependência utilizando **Koin**
-- O projeto deverá seguir os padrões SOLID e ser feito na arquitetura **MVVM** utilizando coroutines (flow/liveData)
-- O projeto deverá conter código Java e Kotlin (80% kotlin e 20% Java)
-- Deverá ser criada uma job periódica (com intervalo de 15 minutos), onde deverá ser feita a requisição dos dados.
-- Faça um readme informando as técnologias escolhidas e o porque.
+## Design System Implementation
 
-### Opcionais
+**Spacing and Dimensions**
+- Custom Dimens object with standardized spacing values
+- Consistent spacing across all UI components
+- Scalable dimension system for different screen sizes
 
-- Testes unitários/integração
-- Módulos
+**String Management**
+- Centralized string resources for all text content
+- String concatenation through resource references
+- Prepared for multi-language support
+- Dynamic text composition for complex UI elements
 
-### O que iremos avaliar
+## Features
 
-- Organização do projeto
-- Utilização de padrões arquiteturais
-- Clareza do código
-- Escolha de estruturas e bibliotecas
-- Ausência de crashs e bugs
-- Detalhes de UI
-- Estrutura e patterns utilizados
-- Clareza e objetividade dos commits
+**Client Management**
+- View client list
+- Client details screen
+- Status verification with Snackbar
 
-Caso encontre algum erro, ou tenha alguma sugestão para melhorar esta avaliação, nos informe 😁
+**Order History**
+- Browse order list
+- Search orders by RCA number
+- Order filtering with debounce (300ms)
+- Legend indicators
 
-### Cores
+**Offline Support**
+- Automatic fallback to local database
+- Background data synchronization every 15 minutes
+- Network connectivity monitoring
 
-**Geral**
+**UI/UX**
+- Modern Compose interface
+- Responsive design with consistent spacing
+- Loading states and error handling
+- Search with real-time filtering
+- Centralized design tokens for consistent theming
 
-- Fundo da tela - #FFFFFF (cinza claro)
-- Toolbar - #186096 (azul mais claro)
-- Status bar - #00386C (azul mais escuro)
-- Fundo da tela que tiver cards - #F1F1F1 (cinza)
-- Fundo dos cards - #FFFFFF (branco)
-- Bottom navigation - #186096
-- Ícone e texto ativos do bottom - #FFFFFF
-- Ícone e texto inativos do bottom - #95B6CF (azul claro)
+## Requirements Compliance
 
-**Splash**
+**Mandatory Requirements**
+- Splash Screen implementation
+- Retrofit for API consumption
+- Room for local data persistence
+- Network-based data source selection
+- Koin dependency injection
+- SOLID principles with MVVM
+- Kotlin (80%) and Java (20%) mix
+- Periodic background job (15 minutes)
+- Coroutines and Flow usage
 
-- Fundo gradiente - de #186096 (azul mais claro) para #053F6A (azul mais escuro)
+**Optional Features Implemented**
+- Unit testing
+- Centralized design system with custom dimensions
+- String resource management for text concatenation
 
-**Dados do cliente**
-- Textos - #000000
-- Labels dos textos - #95989A
-- Razão social - #606060
-- Botão de telefone - #186096
-- Botão de e-mail -#C1392B
-- Botão de Verificar status - #638735 (verde)
-
-**Histórico de pedidos**
-- Textos - #000000 (preto)
-- Labels dos textos - #95989A
-  
-**Status dos pedidos**
-- Em processamento por parte do FV - #95989A (cinza claro)
-- Pedido recusado pelo ERP - #FF9900 (amarelo)
-- Pendente - #606060 (cinza)
-- Bloqueado - #3557AA (roxo)
-- Liberado - #186096 (azul)
-- Montado - #7FAA33 (verde claro)
-- Faturado - #64863B (verde escuro)
-- Cancelado - #E40613 (vermelho)
-- Orçamento - #2D3E4E (cinza escuro) 
-	
-**Tipos de crítica**
-- Aguardando retorno do ERP - #757575 (cinza)
-- Sucesso - #64863B (verde)
-- Falha parcial - #FF9900 (amarelo)
-- Falha total- #E40613 (vermelho)
-  
-**Legendas**
-- Pedido sofreu corte - #FF9900 (amarelo)
-- Pedido com falta - #BF595F (rosa)
-- Pedido cancelado no ERP - #E40613 (vermelho)
-- Pedido com devolução - #186096 (azul)
-- Pedido feito pelo telemarketing - #64863B (verde)
-
-### Screenshots
-
-Imagens             |  Imagens
-:-------------------------:|:-------------------------:
-<img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%201.png" width=50% height=50%>  |  <img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%202.png" width=50% height=50%>
-:-------------------------:|:-------------------------:
-<img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%203.png" width=50% height=50%> | <img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%204.png" width=50% height=50%>
-:-------------------------:|:-------------------------:
-<img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Android%20Compact%20-%205.png" width=50% height=50%> | <img  src="https://github.com/MaximaTechAndroid/ProvaAndroid/blob/master/telas_app/Splash.png" width=50% height=50%>
+Developed for Maxima Tech Android Challenge
