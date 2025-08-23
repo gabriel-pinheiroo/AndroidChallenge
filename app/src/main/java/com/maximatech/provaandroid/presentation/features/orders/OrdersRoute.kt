@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximatech.provaandroid.app.LocalTopBarManager
 import com.maximatech.provaandroid.R
 import com.maximatech.provaandroid.core.domain.model.Order
+import com.maximatech.provaandroid.core.utils.formatTime
 import com.maximatech.provaandroid.presentation.designSystem.tokens.AppColors
 import com.maximatech.provaandroid.presentation.designSystem.tokens.*
 import com.maximatech.provaandroid.presentation.designSystem.components.legends.LegendsDialog
@@ -548,17 +549,5 @@ private fun ErrorCard(
                 )
             }
         }
-    }
-}
-
-private fun formatTime(dateString: String): String {
-    return try {
-        if (dateString.contains("T") && dateString.length >= 16) {
-            dateString.substring(11, 16)
-        } else {
-            "00:00"
-        }
-    } catch (e: Exception) {
-        "00:00"
     }
 }
